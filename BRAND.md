@@ -146,7 +146,7 @@
 | الحاوية | `elmasria-web` على شبكة `coolify` + راوترات Traefik حرفية (`http-elmasria` / `https-elmasria`) |
 | ملفات البناء | `Dockerfile` (nginx:alpine) · `nginx.conf` (`try_files` + `error_page 404 /404.html`) · `.dockerignore` |
 | الوسم الحالي | `:3` — **وسم جديد كل نشر** (إعادة استخدام وسم = الخادم يظن الصورة محدَّثة) |
-| آخر نشر | 2026-09-28 — كوميت `0426549` — الصورة `elmasria:4` (تحقق: `direct=200` + `internal_sni=200` + كل الصفحات 200 + `style.css?v=5` و`main.js?v=5`) |
+| آخر نشر | 2026-09-28 — كوميت `68e23db` — الصورة `elmasria:5` (تحقق: `direct=200` + `internal_sni=200` + `style.css?v=6` + توكنات اللوجو حيّة في CSS المنشور) |
 
 ### قبل أي كوميت يمسّ الواجهة
 1. `python _tools/verify_icons.py` — لا إيموجي متبقٍ، كل مراجع الـsprite سليمة، ووسم واجهة التمرير في كل الصفحات.
