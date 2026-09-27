@@ -29,11 +29,35 @@
   },{threshold:.12}) : null;
   $$(".reveal,.reveal-img").forEach(function(el){ if(io) io.observe(el); else el.classList.add("in"); });
 
-  /* experience-years derived from founding year 1999 (company-stated) */
-  $$("[data-years-since]").forEach(function(el){
-    var y = parseInt(el.getAttribute("data-years-since"),10) || 1999;
-    el.textContent = String(new Date().getFullYear() - y);
-  });
+  /* experience-years derived from founding year 1999 (company-stated) — animated count-up */
+  (function(){
+    var reduceY = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function yearsOf(el){ return new Date().getFullYear() - (parseInt(el.getAttribute("data-years-since"),10) || 1999); }
+    function animate(el){
+      var target = yearsOf(el);
+      if(reduceY || !("requestAnimationFrame" in window)){ el.textContent = String(target); return; }
+      var t0 = null, dur = 1400;
+      function fr(ts){
+        if(!t0) t0 = ts;
+        var p = Math.min((ts - t0) / dur, 1);
+        el.textContent = String(Math.round(target * (1 - Math.pow(1 - p, 3))));
+        if(p < 1) requestAnimationFrame(fr);
+      }
+      requestAnimationFrame(fr);
+    }
+    function watch(){
+      $$("[data-years-since]").forEach(function(el){
+        if(el.__counted) return; el.__counted = true;
+        if(!("IntersectionObserver" in window)){ animate(el); return; }
+        var o = new IntersectionObserver(function(es){
+          es.forEach(function(en){ if(en.isIntersecting){ animate(el); o.disconnect(); } });
+        }, {threshold:.4});
+        o.observe(el);
+      });
+    }
+    if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", watch);
+    else watch();
+  })();
 
   /* contact form: validate then open mail client (static hosting, no backend) */
   var form = $("#contactForm");

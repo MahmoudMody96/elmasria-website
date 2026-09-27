@@ -64,3 +64,76 @@
 - التوكنز: `assets/css/style.css` — بلوك `:root`
 - الشعار: `assets/img/logo.png` — يُستدعى من الهيدر/الفوتر/القائمة في كل الصفحات
 - الأيقونة: نفس ملف الشعار عبر `<link rel="icon">`
+- نظام الأيقونات: `assets/img/icons.svg` — تفاصيله في القسم (6)
+
+## 6) نظام الأيقونات — SVG sprite (v2.3)
+
+لا يوجد في الواجهات أي إيموجي Unicode بعد الآن؛ كل الأيقونات تأتي من ملف واحد:
+
+| البيان | القيمة |
+|---|---|
+| ملف الأيقونات | `assets/img/icons.svg` (35 رمزًا `<symbol>` على شبكة 24×24، `stroke="currentColor"`) |
+| الاستدعاء من صفحات الجذر | `<use href="assets/img/icons.svg#i-xxx">` |
+| الاستدعاء من صفحات `services/` | `<use href="../assets/img/icons.svg#i-xxx">` |
+
+### الصيغة المعتمدة في الوسم
+
+```html
+<svg class="ic" aria-hidden="true" focusable="false"><use href="assets/img/icons.svg#i-phone"></use></svg>
+```
+
+- `.ic` الأساسية في `style.css`: `width/height:1.25em`، `fill:none`، `stroke:currentColor`، `stroke-width:1.8`، `vertical-align:-.22em` → الأيقونة ترث لون النص وحجمه تلقائيًا.
+- `ic-h` تُستخدم للأيقونة داخل `<h1>` في صفحة الخدمة (`.page-hero h1 .ic-h` — لون `--org-lt`).
+
+### مواضع الأيقونات في الوسم
+
+| الموضع | الفئة/السياق | أمثلة الرموز |
+|---|---|---|
+| قائمة الخدمات المنسدلة | `.di` (20px) | `i-vest` `i-extinguisher` `i-bug` `i-leaf` `i-clipboard` `i-hat` `i-crane` `i-sparkles` `i-tree` `i-cross` `i-ball` `i-menu` |
+| شارة بطاقة الخدمة | `.svc-ico` (26px، أبيض) | نفس رموز الخدمات |
+| عنوان صفحة الخدمة | `<h1>` + `.ic-h` | رمز الخدمة بلون `--org-lt` |
+| عناوين الأقسام | `.why-card h3 .ic` `.pol h3 .ic` `.info-card h3 .ic` `.form-card h3 .ic` | `i-file` `i-factory` `i-tool` `i-crosshair` `i-check-circle` `i-handshake` `i-users` `i-search` `i-trending` `i-infinity` … |
+| تيك القوائم | `.ck .ic` | `i-check` |
+| رابط «تفاصيل الخدمة» والبطاقات الجانبية | `.svc-link .ic` / `.side-card ul a .ic` | `i-arrow-left` |
+| زر القائمة الجوالة / إغلاق الدرج | `.burger .ic` / `button[data-close] .ic` | `i-menu` / `i-x` |
+| سهم قائمة «خدماتنا» | `.nav-links a.nl .ic` | `i-chevron-down` |
+| بيانات التواصل (فوتر + صفحة التواصل + شريط الجوال) | `.foot-contact .ic` `.tel-big .ic` `.mobile-call .ic` `.btn .ic` | `i-phone` `i-mail` `i-pin` |
+
+### أدوات الصيانة (`_tools/`)
+
+| الأداة | الوظيفة |
+|---|---|
+| `audit_icons.py` | تقرير بكل إيموجي متبقٍ وموضع استخدامه (بالوسم والفئة) |
+| `migrate_icons.py` | تحويل الإيموجي إلى `<use>` (يُشغّل مع `--check` للمعاينة دون كتابة) |
+| `verify_icons.py` | التحقق: لا إيموجي، كل `<use>` يشير إلى رمز موجود، وجود مواضع الوسم المتوقعة |
+| `visual_check.py` | فحص بصري بـPlaywright + صور مرجعية: كل أيقونة لها `<use>` وحجم غير صفري على الديسكتوب والجوال |
+| `bump_css_version.py` | رفع رقم إصدار `style.css?v=N` في كل الصفحات بعد أي تعديل CSS |
+| `normalize_eol.py` | إعادة ضبط نهايات الأسطر إلى CRLF كما في المستودع |
+
+> بعد أي تعديل على `assets/css/style.css` شغّل: `python _tools/bump_css_version.py`
+> وبعد أي تعديل على الأيقونات شغّل: `python _tools/verify_icons.py`
+
+---
+
+## 7) النشر والاستضافة (staging)
+
+| البيان | القيمة |
+|---|---|
+| الرابط الحالي | `https://elmasria.aidy.site` |
+| النوع | موقع ثابت على nginx — صورة في ريجستري الخادم المحلي `127.0.0.1:5000/elmasria:<N>` |
+| الحاوية | `elmasria-web` على شبكة `coolify` + راوترات Traefik حرفية (`http-elmasria` / `https-elmasria`) |
+| ملفات البناء | `Dockerfile` (nginx:alpine) · `nginx.conf` (`try_files` + `error_page 404 /404.html`) · `.dockerignore` |
+| الوسم الحالي | `:3` — **وسم جديد كل نشر** (إعادة استخدام وسم = الخادم يظن الصورة محدَّثة) |
+
+### قبل أي كوميت يمسّ الواجهة
+1. `python _tools/verify_icons.py` — لا إيموجي متبقٍ، وكل مراجع الـsprite سليمة.
+2. إن تغيّر `assets/css/style.css`: `python _tools/bump_css_version.py` (المتصفح يكاشفه 7 أيام بسبب `expires 7d`).
+3. `python _tools/normalize_eol.py` — إعادة نهايات أسطر الـHTML إلى CRLF كباقي المستودع.
+
+### النشر (دقيقتان — السيرفر يبني من GitHub)
+`git push origin main` ثم clone على السيرفر → `docker build -t 127.0.0.1:5000/elmasria:<N+1>` → `docker push` → `docker rm -f elmasria-web` → `docker run` بنفس الـlabels → تحقق. الأوامر الجاهزة كاملة في `COOLIFY-AGENT-GUIDE.md` § ٩.١.
+
+### مراجع التوثيق
+- `COOLIFY-AGENT-GUIDE.md` — دليل الوكيل الكامل لبيئة الخادم: Traefik v3.6، Coolify v4.3.23، 17 فخًا مدفوع الثمن، مسارات النشر عبر API، ونمط النشر اليدوي لموقع ثابت (+ ثوابت هذا الموقع في § ٩.١).
+- `_tools/` — أدوات الصيانة (مستثناة من الصورة فلا تُنشر على الدومين).
+

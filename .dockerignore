@@ -1,2 +1,9 @@
 ﻿.git
+.github
+_tools
+stitch_modern_website_redesign_2026
+*.md
+.gitignore
+.dockerignore
+
 

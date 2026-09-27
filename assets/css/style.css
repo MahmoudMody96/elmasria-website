@@ -367,7 +367,7 @@ table.info tr td:first-child{font-weight:800;color:var(--g900);width:34%}
   .svc-side{position:static}
   .foot-grid{grid-template-columns:1fr 1fr}
   .nav-links{display:none}
-  .burger{display:block}
+  .burger{display:grid;place-items:center}
   .drawer{display:block;position:fixed;inset:0;z-index:100;pointer-events:none}
   .drawer .scrim{position:absolute;inset:0;background:rgba(6,36,51,.6);opacity:0;transition:opacity .25s}
   .drawer .panel{position:absolute;top:0;bottom:0;right:0;width:min(360px,88%);background:var(--g950);color:#fff;
@@ -467,4 +467,69 @@ table.info tr td:first-child{font-weight:800;color:var(--g900);width:34%}
   .hero-inner>*{opacity:1!important;transform:none!important;animation:none!important}
   .reveal,.reveal-img{opacity:1!important;transform:none!important;clip-path:none!important}
   .marquee-track,.hero-media img,.page-hero .ph-bg img{animation:none!important}
+}
+
+/* ============================================================
+   UI v2.2 — pro SVG icon system + interaction upgrades
+   ============================================================ */
+.ic{width:1.25em;height:1.25em;fill:none;stroke:currentColor;stroke-width:1.8;
+  stroke-linecap:round;stroke-linejoin:round;vertical-align:-.22em;flex:none}
+.di .ic{width:20px;height:20px}
+.svc-ico .ic{width:26px;height:26px}
+.page-hero h1 .ic-h{width:.92em;height:.92em;vertical-align:-.1em;color:var(--org-lt)}
+.why-card h3 .ic,.pol h3 .ic,.info-card h3 .ic,.form-card h3 .ic{color:var(--g700)}
+.foot-contact .ic{color:var(--org-lt);width:18px;height:18px}
+.tel-big .ic{color:var(--g900);width:22px;height:22px}
+.mobile-call .ic{width:20px;height:20px}
+/* v2.3 — icon contexts introduced by the emoji → SVG migration */
+.burger .ic{width:24px;height:24px;vertical-align:0}
+button[data-close]{display:grid;place-items:center;line-height:0}
+button[data-close] .ic{width:19px;height:19px}
+.check-list .ck .ic{width:15px;height:15px;stroke-width:2.6}
+.pol h3 .ic,.why-card h3 .ic,.info-card h3 .ic,.form-card h3 .ic{width:1.05em;height:1.05em;vertical-align:-.14em}
+.nav-links a.nl .ic{width:.85em;height:.85em;margin-inline-start:5px;vertical-align:-.06em}
+.nav-links a.nl:hover .ic{color:var(--org-d)}
+.btn .ic{width:1.05em;height:1.05em}
+.svc-link .ic{width:1em;height:1em;transition:transform .2s ease}
+.svc-link:hover .ic{transform:translateX(-3px)}
+.side-card ul a .ic{width:16px;height:16px;color:var(--g700)}
+.side-card ul a:hover .ic{color:var(--g800)}
+.mobile-call .ic{vertical-align:-.18em}
+.nav-links a.nl{transition:background .2s ease,color .2s ease}
+.sector img{transition:transform .5s ease}
+.sector:hover img{transform:scale(1.07)}
+.pol{transition:transform .2s ease,box-shadow .2s ease}
+.pol:hover{transform:translateY(-4px);box-shadow:var(--sh-s)}
+/* لمعة الأزرار */
+.btn{position:relative;overflow:hidden}
+.btn::after{content:"";position:absolute;top:-10%;bottom:-10%;width:36%;left:-60%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);
+  transform:skewX(-20deg);transition:left .55s ease;pointer-events:none}
+.btn:hover::after{left:135%}
+/* تعويض الهيدر الثابت للروابط الداخلية */
+section[id],div[id],form[id]{scroll-margin-top:96px}
+/* شريط تقدم القراءة */
+#progress{position:fixed;top:0;right:0;left:0;height:3px;z-index:90;
+  background:linear-gradient(to left,var(--g700),var(--lime));
+  transform:scaleX(0);transform-origin:right}
+/* زر الصعود */
+#toTop{position:fixed;bottom:24px;left:24px;z-index:80;width:52px;height:52px;border-radius:50%;
+  border:0;background:var(--g900);color:#fff;display:grid;place-items:center;cursor:pointer;
+  box-shadow:var(--sh);opacity:0;transform:translateY(14px);pointer-events:none;
+  transition:opacity .25s ease,transform .25s ease,background .2s ease}
+#toTop.show{opacity:1;transform:none;pointer-events:auto}
+#toTop:hover{background:var(--org)}
+#toTop .ic{width:22px;height:22px}
+/* مؤشر النزول في الهيرو */
+.scroll-cue{position:absolute;bottom:140px;left:50%;transform:translateX(-50%);z-index:4;
+  width:30px;height:50px;border:2px solid rgba(255,255,255,.55);border-radius:16px}
+.scroll-cue span{position:absolute;top:8px;right:50%;transform:translateX(50%);width:5px;height:9px;
+  border-radius:3px;background:var(--org-lt);animation:cue 1.8s ease-in-out infinite}
+@keyframes cue{0%{opacity:1;top:8px}70%{opacity:0;top:22px}100%{opacity:0;top:8px}}
+@media(max-width:640px){
+  .scroll-cue{display:none}
+  #toTop{bottom:86px;left:14px}
+}
+@media (prefers-reduced-motion:reduce){
+  .btn::after,.scroll-cue{display:none}
 }
