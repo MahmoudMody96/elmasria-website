@@ -120,20 +120,18 @@ section{padding:84px 0}
 .brand-mark::after{content:"";position:absolute;inset:auto -8px -10px auto;width:34px;height:34px;background:var(--org);transform:rotate(45deg)}
 .brand-name{font-family:var(--font-h);font-weight:900;font-size:19px;color:var(--g900);line-height:1.3}
 .brand-name small{display:block;font-family:var(--font-b);font-weight:400;font-size:12px;color:var(--mut)}
-/* الشعار الرسمي — BRAND.md */
-.brand-tile{background:#fff;border:1px solid var(--line);border-radius:14px;padding:4px 10px;display:flex;align-items:center}
-.brand-logo{height:54px;width:auto;display:block;border-radius:8px}
+/* الشعار الرسمي — BRAND.md · emblem مربع شفاف + نص HTML حي */
+.brand-tile{background:#fff;border:1px solid var(--line);border-radius:14px;padding:4px;display:flex;align-items:center;justify-content:center;flex:none}
+.brand-logo{height:52px;width:52px;object-fit:contain;display:block;border-radius:10px}
 .brand-logo.missing{display:none}
 .brand-tile:has(.brand-logo.missing){display:none}
-.brand:has(.brand-logo:not(.missing)) .brand-mark,
-.brand:has(.brand-logo:not(.missing)) .brand-name{display:none}
-.foot-logo{height:58px;width:auto;display:block;border-radius:10px}
-.foot-logo.missing{display:none}
-.foot-logo:not(.missing) ~ .brand-mark,
-.foot-logo:not(.missing) ~ .brand-name{display:none}
-.drawer-logo{height:46px;width:auto;display:block;border-radius:8px}
+/* عند وجود الشعار نخفي البديل النصي (م) فقط — ونُبقي الاسم العربي حيًا */
+.brand:has(.brand-logo:not(.missing)) .brand-mark{display:none}
+.drawer-logo{height:46px;width:46px;object-fit:contain;display:block;border-radius:10px;background:#fff;padding:2px;flex:none}
 .drawer-logo.missing{display:none}
-.drawer-logo:not(.missing) + b{display:none}
+.drawer-brand{display:flex;gap:10px;align-items:center}
+.drawer-brandname{font-family:var(--font-h);font-weight:900;font-size:16px;color:#fff;line-height:1.4}
+.drawer-brandname small{display:block;font-family:var(--font-b);font-size:11.5px;font-weight:400;color:#9fb3bd;letter-spacing:.4px}
 .nav-links{display:flex;align-items:center;gap:4px;list-style:none;margin:0;padding:0}
 .nav-links>li{position:relative}
 .nav-links a.nl{display:block;padding:12px 15px;text-decoration:none;color:var(--ink2);font-weight:700;font-size:15.5px;border-radius:8px}
@@ -151,7 +149,7 @@ section{padding:84px 0}
 .burger{display:none;background:var(--g900);color:#fff;border:0;border-radius:10px;width:48px;height:48px;font-size:22px;cursor:pointer}
 .drawer{display:none}
 
-/* ---------- hero ---------- */
+/* ---------- hero : تكوين بصري (نص + بطاقة الشعار والصورة) ---------- */
 .hero{position:relative;background:var(--g950);color:#fff;overflow:hidden;padding:0}
 .hero-media{position:absolute;inset:0}
 .hero-media img{width:100%;height:100%;object-fit:cover;opacity:.42}
@@ -160,7 +158,9 @@ section{padding:84px 0}
 }
 .hero-diagonal{position:absolute;bottom:-1px;right:0;width:min(560px,60%);height:120px;background:var(--paper);
   clip-path:polygon(12% 0,100% 0,100% 100%,0 100%);z-index:2}
-.hero-inner{position:relative;z-index:3;padding:96px 0 130px;max-width:760px}
+.hero-layout{position:relative;z-index:3;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;
+  padding:88px 0 130px}
+.hero-inner{max-width:640px}
 .hero-badge{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.1);
   border:1px solid var(--line-d);border-radius:100px;padding:7px 16px;font-size:14px;font-weight:700;color:#ffe3c9}
 .hero-badge i{width:9px;height:9px;border-radius:50%;background:var(--logo-lime);display:inline-block}
@@ -174,6 +174,21 @@ section{padding:84px 0}
 .hero-facts b{display:block;font-family:var(--font-h);font-size:26px;color:#fff}
 .hero-facts b em{font-style:normal;color:var(--org)}
 .hero-facts span{font-size:13.5px;color:#b4c9d4}
+/* البطاقة البصرية : الشعار الرسمي فوق صورة صناعية */
+.hero-visual{position:relative;display:grid;gap:14px;justify-items:center}
+.hero-emblem-card{background:rgba(255,255,255,.96);border-radius:22px;padding:26px 26px 18px;text-align:center;
+  box-shadow:0 26px 60px -22px rgba(0,0,0,.55);width:min(300px,80%)}
+.hero-emblem-card img{width:190px;height:190px;object-fit:contain;margin-inline:auto}
+.hero-emblem-card b{display:block;font-family:var(--font-h);font-weight:900;color:var(--g900);font-size:17px;margin-top:10px}
+.hero-emblem-card small{display:block;font-size:12px;color:var(--mut);letter-spacing:.5px}
+.hero-photo-card{position:relative;width:min(360px,100%);border-radius:20px;overflow:hidden;
+  border:1px solid var(--line-d);box-shadow:0 26px 60px -22px rgba(0,0,0,.55)}
+.hero-photo-card img{width:100%;height:220px;object-fit:cover;display:block}
+.hero-photo-card figcaption{position:absolute;inset-inline:0;bottom:0;padding:10px 16px;font-size:13px;font-weight:700;
+  background:linear-gradient(to top,rgba(6,36,51,.9),transparent);color:#fff}
+.hero-chip-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.hero-chip{background:rgba(255,255,255,.12);border:1px solid var(--line-d);color:#ffe3c9;font-size:13px;font-weight:700;
+  border-radius:100px;padding:6px 14px}
 
 /* ---------- page hero (inner) ---------- */
 .page-hero{background:var(--g950);color:#fff;position:relative;overflow:hidden}
@@ -361,6 +376,11 @@ table.info tr td:first-child{font-weight:800;color:var(--g900);width:34%}
 
 /* ---------- responsive ---------- */
 @media(max-width:1020px){
+  .hero-layout{grid-template-columns:1fr;gap:36px;padding:64px 0 120px}
+  .hero-visual{grid-template-columns:1fr 1fr;align-items:stretch;width:100%}
+  .hero-emblem-card{width:100%}
+  .hero-photo-card{width:100%}
+  .hero-chip-row{grid-column:1/-1}
   .svc-grid{grid-template-columns:repeat(2,1fr)}
   .cap-band{grid-template-columns:repeat(2,1fr)}
   .sector-grid{grid-template-columns:repeat(2,1fr)}
@@ -393,7 +413,8 @@ table.info tr td:first-child{font-weight:800;color:var(--g900);width:34%}
   .navbar{padding:8px 0;gap:8px}
   .navbar .btn{display:none}
   .brand{min-width:0;flex:1;gap:8px}
-  .brand-name{font-size:13px;line-height:1.4}
+  .brand-logo{height:42px;width:42px}
+  .brand-name{font-size:15px;line-height:1.4}
   .brand-name small{display:none}
   .brand-mark{width:38px;height:38px;font-size:15px;border-radius:9px}
   .burger{width:44px;height:44px}
@@ -404,7 +425,11 @@ table.info tr td:first-child{font-weight:800;color:var(--g900);width:34%}
   .contact-grid{grid-template-columns:1fr}
   .f-row{grid-template-columns:1fr}
   .topbar .tb-hide{display:none}
-  .hero-inner{padding:70px 0 110px}
+  .hero-layout{padding:52px 0 108px}
+  .hero-visual{grid-template-columns:1fr}
+  .hero-emblem-card img{width:150px;height:150px}
+  .hero-photo-card img{height:190px}
+  .hero-inner{padding:0}
   .hero-facts div{padding-inline-end:18px;margin-inline-end:18px}
   .cta-band{padding:36px 26px}
   .foot-grid{grid-template-columns:1fr}
@@ -437,13 +462,15 @@ table.info tr td:first-child{font-weight:800;color:var(--g900);width:34%}
   transition:clip-path .9s cubic-bezier(.2,.7,.2,1),opacity .7s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
 .reveal-img.in{clip-path:inset(0 0 0 0 round 18px);opacity:1;transform:none}
 /* دخول الهيرو عند التحميل */
-.hero-inner>*{opacity:0;transform:translateY(30px);animation:heroUp .9s cubic-bezier(.2,.7,.2,1) forwards}
-.hero-inner>*:nth-child(1){animation-delay:.05s}
-.hero-inner>*:nth-child(2){animation-delay:.16s}
-.hero-inner>*:nth-child(3){animation-delay:.27s}
-.hero-inner>*:nth-child(4){animation-delay:.38s}
-.hero-inner>*:nth-child(5){animation-delay:.49s}
-.hero-inner.anim-done>*{animation:none;opacity:1;transform:none}
+.hero-layout .hero-inner>*{opacity:0;transform:translateY(30px);animation:heroUp .9s cubic-bezier(.2,.7,.2,1) forwards}
+.hero-layout .hero-inner>*:nth-child(1){animation-delay:.05s}
+.hero-layout .hero-inner>*:nth-child(2){animation-delay:.16s}
+.hero-layout .hero-inner>*:nth-child(3){animation-delay:.27s}
+.hero-layout .hero-inner>*:nth-child(4){animation-delay:.38s}
+.hero-layout .hero-inner>*:nth-child(5){animation-delay:.49s}
+.hero-layout .hero-inner.anim-done>*{animation:none;opacity:1;transform:none}
+.hero-visual{opacity:0;transform:translateY(30px);animation:heroUp .9s cubic-bezier(.2,.7,.2,1) .3s forwards}
+.hero-layout .hero-inner.anim-done ~ .hero-visual{animation:none;opacity:1;transform:none}
 @keyframes heroUp{to{opacity:1;transform:none}}
 /* تحريك صور الهيرو — تقريب بطيء */
 @keyframes kb{from{transform:scale(1)}to{transform:scale(1.1)}}
