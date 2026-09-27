@@ -325,5 +325,5 @@ curl.exe -s -o NUL -w "%{http_code}\n" https://elmasria.aidy.site/assets/img/ico
 ```
 
 > ملاحظتان خاصتان بهذا الموقع:
-> 1. أي تعديل على `assets/css/style.css` يلزمه `python _tools/bump_css_version.py` قبل الكوميت، وإلا يبقى CSS القديم في كاش المتصفح (`expires 7d` في `nginx.conf`).
+> 1. أي تعديل على `assets/css/style.css` **أو** `assets/js/main.js` يلزمه `python _tools/bump_css_version.py` قبل الكوميت (السكربت يرفع إصدار الملفين تلقائيًا)، وإلا يبقى الملف القديم في كاش المتصفح (`expires 7d` في `nginx.conf`).
 > 2. `_tools/` وملفات التوثيق `.md` و`.git` **مستثناة في `.dockerignore`** فلا تُنشر على الدومين.

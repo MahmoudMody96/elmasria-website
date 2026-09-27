@@ -47,6 +47,17 @@ EXPECTED_HOOKS = [
     (r'xmlns="http://www.w3.org/2000/svg"', "sprite linked from a page (sanity)"),
 ]
 
+# motion v2.2 scroll UI: the markup that style.css + main.js expect to find
+PER_PAGE_HOOKS = [
+    (r'<div id="progress" aria-hidden="true"></div>', "reading-progress bar"),
+    (r'<button id="toTop" type="button" aria-label="العودة لأعلى الصفحة">'
+     r'<svg class="ic" aria-hidden="true" focusable="false">'
+     r'<use href="[^"]*#i-arrow-up"></use></svg></button>', "back-to-top button"),
+]
+HOME_HOOKS = [
+    (r'<div class="scroll-cue" aria-hidden="true"><span></span></div>', "hero scroll cue"),
+]
+
 
 def main() -> int:
     problems: list[str] = []
@@ -56,10 +67,12 @@ def main() -> int:
         symbols = set(SYMBOL.findall(fh.read()))
 
     used: dict[str, int] = {}
+    texts: dict[str, str] = {}
     for rel in PAGES:
         path = os.path.join(ROOT, rel.replace("/", os.sep))
         with open(path, "r", encoding="utf-8") as fh:
             text = fh.read()
+        texts[rel] = text
 
         leftover = sorted({ch for ch in text if EMOJI.match(ch)})
         if leftover:
@@ -82,6 +95,21 @@ def main() -> int:
 
     unused = sorted(symbols - set(used))
     print("unused symbols      : " + (", ".join(unused) if unused else "none"))
+
+    # ---- scroll UI markup (motion v2.2): must be on every page ----
+    missing_pages = [rel for rel, text in texts.items()
+                     if not all(re.search(pat, text) for pat, _ in PER_PAGE_HOOKS)]
+    for rel, text in texts.items():
+        for pattern, label in PER_PAGE_HOOKS:
+            if not re.search(pattern, text):
+                problems.append(f"{rel}: missing {label}")
+    home = texts.get("index.html", "")
+    for pattern, label in HOME_HOOKS:
+        if not re.search(pattern, home):
+            problems.append(f"index.html: missing {label}")
+    print(f"scroll UI markup    : {len(texts) - len(missing_pages)}/{len(texts)} pages wired"
+          f" (progress + toTop), cue on index.html: "
+          f"{'yes' if all(re.search(p, home) for p, _ in HOME_HOOKS) else 'no'}")
 
     for pattern, label in EXPECTED_HOOKS:
         found = any(re.search(pattern, open(os.path.join(ROOT, p.replace("/", os.sep)),

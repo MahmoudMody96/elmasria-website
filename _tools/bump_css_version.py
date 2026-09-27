@@ -1,12 +1,21 @@
 # -*- coding: utf-8 -*-
 """
-Bump the style.css cache-buster (?v=N) in every page.
+Bump the cache-buster (?v=N) of the front-end assets in every page.
 
-The stylesheet gained the v2.3 icon-context rules, so returning visitors must not
-keep the cached copy. Run from repo root:
+Both assets carry their own version query:
+    <link href="assets/css/style.css?v=N" …>
+    <script src="assets/js/main.js?v=N" …>
 
-    python _tools/bump_css_version.py          # 3 -> 4
-    python _tools/bump_css_version.py 3 5      # 3 -> 5
+A new value forces returning visitors (the pages are cached for 7 days) to
+fetch the updated file, so run this after touching CSS **or** JS.
+
+Usage (from repo root):
+    python _tools/bump_css_version.py --set 5    # deterministic: both assets -> ?v=5
+    python _tools/bump_css_version.py            # auto: every asset N -> max(N)+1
+    python _tools/bump_css_version.py 4 5        # manual: ?v=4 -> ?v=5 (both assets)
+
+`--set` is the safe one to re-run: it is idempotent, while the auto mode bumps
+again on every run (run it once per asset change).
 """
 from __future__ import annotations
 
@@ -26,24 +35,73 @@ PAGES = [
 ]
 
 
+ASSETS = ["assets/css/style.css?v=", "assets/js/main.js?v="]
+
+
 def main(argv: list[str]) -> int:
-    old = argv[0] if argv else "3"
-    new = argv[1] if len(argv) > 1 else str(int(old) + 1)
-    pattern = re.compile(r"(assets/css/style\.css\?v=)" + re.escape(old) + r"\b")
+    set_to = None
+    if "--set" in argv:
+        i = argv.index("--set")
+        set_to = argv[i + 1] if len(argv) > i + 1 else ""
+        if not set_to.isdigit():
+            print("usage: python _tools/bump_css_version.py --set <N>")
+            return 2
+
+    old = argv[0] if argv and not argv[0].startswith("--") else None
+    new = argv[1] if len(argv) > 1 else (str(int(old) + 1) if old is not None else None)
+
+    pages: dict[str, str] = {}
     for rel in PAGES:
         path = os.path.join(ROOT, rel.replace("/", os.sep))
         if not os.path.exists(path):
             print(f"{rel:<34} missing — skipped")
             continue
         with open(path, "r", encoding="utf-8", newline="") as fh:
-            text = fh.read()
-        updated, n = pattern.subn(r"\g<1>" + new, text)
-        if not n:
-            print(f"{rel:<34} no change")
-            continue
-        with open(path, "w", encoding="utf-8", newline="") as fh:
-            fh.write(updated)
-        print(f"{rel:<34} style.css?v={old} → v={new} ({n})")
+            pages[rel] = fh.read()
+
+    # auto mode (no arguments) looks at the whole site and picks max(N)+1 per asset
+    targets: dict[str, str] = {}
+    if old is None and set_to is None:
+        for asset in ASSETS:
+            pattern = re.compile(re.escape(asset) + r"(\d+)")
+            seen = {int(m.group(1)) for text in pages.values() for m in pattern.finditer(text)}
+            if seen:
+                targets[asset] = str(max(seen) + 1)
+        print("auto mode — bumping to the next version; "
+              "use `--set <N>` when you need a deterministic value.\n")
+
+    for rel, text in pages.items():
+        updated, notes = text, []
+        for asset in ASSETS:
+            name = asset.split("?")[0].split("/")[-1]
+            pattern = re.compile(re.escape(asset) + r"(\d+)")
+            current = sorted({m.group(1) for m in pattern.finditer(updated)})
+
+            if not current:
+                notes.append(f"{name}: not linked")
+                continue
+            if set_to is not None:
+                target = set_to
+            elif old is None:
+                target = targets[asset]
+            else:
+                strict = re.compile(re.escape(asset + old) + r"\b")
+                updated, n = strict.subn(asset + new, updated)
+                notes.append(f"{name}:v{old} → v{new} ({n})" if n
+                             else f"{name}: no v={old}")
+                continue
+
+            if current == [target]:
+                notes.append(f"{name}:v{target} unchanged")
+                continue
+            updated = pattern.sub(f"{asset}{target}", updated)
+            notes.append(f"{name}:v{'/v'.join(current)} → v{target}")
+
+        if updated != text:
+            path = os.path.join(ROOT, rel.replace("/", os.sep))
+            with open(path, "w", encoding="utf-8", newline="") as fh:
+                fh.write(updated)
+        print(f"{rel:<34} " + " · ".join(notes))
     return 0
 
 

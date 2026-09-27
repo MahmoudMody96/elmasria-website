@@ -103,4 +103,30 @@
     }
     window.addEventListener("scroll", onScroll, {passive:true});
   })();
+
+  /* motion v2.2 — reading progress · back-to-top · hero scroll cue */
+  (function(){
+    var bar = $("#progress"), top = $("#toTop"), cue = $(".scroll-cue");
+    if(!bar && !top && !cue) return;
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var ticking = false;
+    function paint(){
+      ticking = false;
+      var y = window.scrollY || window.pageYOffset || 0;
+      var max = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+      if(bar) bar.style.transform = "scaleX(" + Math.min(y / max, 1).toFixed(4) + ")";
+      if(top) top.classList.toggle("show", y > window.innerHeight * .6);
+      if(cue) cue.classList.toggle("off", y > 80);
+    }
+    function queue(){ if(ticking) return; ticking = true; requestAnimationFrame(paint); }
+    window.addEventListener("scroll", queue, {passive:true});
+    window.addEventListener("resize", paint, {passive:true});
+    paint();
+    if(top){
+      top.addEventListener("click", function(){
+        if(reduce || !("scrollTo" in window) || !window.scrollTo.length){ window.scrollTo(0, 0); return; }
+        window.scrollTo({top:0, behavior:"smooth"});
+      });
+    }
+  })();
 })();

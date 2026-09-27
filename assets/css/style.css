@@ -533,3 +533,14 @@ section[id],div[id],form[id]{scroll-margin-top:96px}
 @media (prefers-reduced-motion:reduce){
   .btn::after,.scroll-cue{display:none}
 }
+/* ============================================================
+   v2.4 — wiring for the scroll UI (progress · back-to-top · hero cue)
+   ============================================================ */
+#progress{will-change:transform}
+.scroll-cue{pointer-events:none;transition:opacity .35s ease}
+.scroll-cue.off{opacity:0}
+#toTop:focus-visible{outline:3px solid var(--org-lt);outline-offset:3px}
+@media print{
+  #progress,#toTop,.scroll-cue{display:none}
+}
+

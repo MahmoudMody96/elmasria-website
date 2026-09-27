@@ -65,6 +65,7 @@
 - الشعار: `assets/img/logo.png` — يُستدعى من الهيدر/الفوتر/القائمة في كل الصفحات
 - الأيقونة: نفس ملف الشعار عبر `<link rel="icon">`
 - نظام الأيقونات: `assets/img/icons.svg` — تفاصيله في القسم (6)
+- عناصر واجهة التمرير: `#progress` + `#toTop` + `.scroll-cue` — الوسم في كل الصفحات (أداة `_tools/add_scroll_ui.py`) والسلوك في `assets/js/main.js`
 
 ## 6) نظام الأيقونات — SVG sprite (v2.3)
 
@@ -103,15 +104,17 @@
 
 | الأداة | الوظيفة |
 |---|---|
+| `add_scroll_ui.py` | حقن وسم واجهة التمرير في كل الصفحات: `#progress` بعد `<body>`، زر `#toTop` (رمز `i-arrow-up`) قبل سكربت `main.js`، و`.scroll-cue` داخل هيرو الصفحة الرئيسية — آمن التكرار ويحافظ على CRLF (يُشغّل مع `--check` للمعاينة) |
 | `audit_icons.py` | تقرير بكل إيموجي متبقٍ وموضع استخدامه (بالوسم والفئة) |
 | `migrate_icons.py` | تحويل الإيموجي إلى `<use>` (يُشغّل مع `--check` للمعاينة دون كتابة) |
-| `verify_icons.py` | التحقق: لا إيموجي، كل `<use>` يشير إلى رمز موجود، وجود مواضع الوسم المتوقعة |
-| `visual_check.py` | فحص بصري بـPlaywright + صور مرجعية: كل أيقونة لها `<use>` وحجم غير صفري على الديسكتوب والجوال |
-| `bump_css_version.py` | رفع رقم إصدار `style.css?v=N` في كل الصفحات بعد أي تعديل CSS |
+| `verify_icons.py` | التحقق: لا إيموجي، كل `<use>` يشير إلى رمز موجود، المواضع المتوقعة، ووسم واجهة التمرير في 17 صفحة |
+| `visual_check.py` | فحص بصري بـPlaywright + صور مرجعية: كل أيقونة لها `<use>` وحجم غير صفري، واختبار حقيقي لواجهة التمرير (زر الصعود يظهر/يُخفي، الشريط يتقدم، والضغط يعود للأعلى) + صفر أخطاء JS/console |
+| `bump_css_version.py` | رفع كاش الاستدعاء `?v=N` لـ`style.css` **و**`main.js` في كل الصفحات — `--set 5` حتمي وقابل لإعادة التشغيل، وبلا وسائط يزيد على أعلى رقم موجود |
 | `normalize_eol.py` | إعادة ضبط نهايات الأسطر إلى CRLF كما في المستودع |
 
-> بعد أي تعديل على `assets/css/style.css` شغّل: `python _tools/bump_css_version.py`
-> وبعد أي تعديل على الأيقونات شغّل: `python _tools/verify_icons.py`
+> بعد أي تعديل على `assets/css/style.css` **أو** `assets/js/main.js` شغّل: `python _tools/bump_css_version.py --set <الرقم التالي>`
+> بعد أي تعديل على الأيقونات شغّل: `python _tools/verify_icons.py`
+> بعد أي تعديل على الوسم/السلوك شغّل: `node --check assets/js/main.js` + `python _tools/visual_check.py`
 
 ---
 
@@ -127,8 +130,8 @@
 | آخر نشر | 2026-09-28 — كوميت `df52e44` — الصورة `elmasria:3` (تحقق: `internal_sni=200` + كل الصفحات 200 + `style.css?v=4`) |
 
 ### قبل أي كوميت يمسّ الواجهة
-1. `python _tools/verify_icons.py` — لا إيموجي متبقٍ، وكل مراجع الـsprite سليمة.
-2. إن تغيّر `assets/css/style.css`: `python _tools/bump_css_version.py` (المتصفح يكاشفه 7 أيام بسبب `expires 7d`).
+1. `python _tools/verify_icons.py` — لا إيموجي متبقٍ، كل مراجع الـsprite سليمة، ووسم واجهة التمرير في كل الصفحات.
+2. إن تغيّر `assets/css/style.css` أو `assets/js/main.js`: `python _tools/bump_css_version.py` (المتصفح يكاشفهما 7 أيام بسبب `expires 7d`).
 3. `python _tools/normalize_eol.py` — إعادة نهايات أسطر الـHTML إلى CRLF كباقي المستودع.
 
 ### النشر (دقيقتان — السيرفر يبني من GitHub)
