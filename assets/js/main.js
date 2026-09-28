@@ -44,6 +44,7 @@
         if(p < 1) requestAnimationFrame(fr);
       }
       requestAnimationFrame(fr);
+      setTimeout(function(){ el.textContent = String(target); }, dur + 400);
     }
     function watch(){
       $$("[data-years-since]").forEach(function(el){

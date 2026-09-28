@@ -581,6 +581,67 @@ section[id],div[id],form[id]{scroll-margin-top:96px}
   #progress,#toTop,.scroll-cue{display:none}
 }
 /* ============================================================
+   v2.0 REDESIGN — service clusters + per-service art direction
+   ============================================================ */
+.svc-clusters{display:grid;gap:60px;margin-top:40px}
+.cluster-head{display:flex;gap:18px;align-items:flex-start;margin-bottom:22px}
+.cluster-no{flex:none;width:54px;height:54px;border-radius:16px;background:var(--g900);color:#fff;
+  font-family:var(--font-h);font-weight:900;font-size:24px;display:grid;place-items:center}
+.cluster:nth-child(2) .cluster-no{background:var(--org)}
+.cluster:nth-child(3) .cluster-no{background:var(--g700)}
+.cluster-head h3{font-size:23px;margin:0}
+.cluster-head p{margin:4px 0 0;color:var(--mut);font-size:15.5px;max-width:60ch}
+.cluster-feat{display:grid;grid-template-columns:1fr 1fr;background:#fff;border:1px solid var(--line);
+  border-radius:18px;overflow:hidden;margin-bottom:8px}
+.cluster.flip .cf-img{order:2}
+.cf-img{position:relative;min-height:280px;display:block;overflow:hidden}
+.cf-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.cluster-feat:hover .cf-img img{transform:scale(1.05)}
+.cf-img .svc-num{position:absolute;top:14px;left:14px;z-index:2}
+.cf-body{padding:36px 34px;display:flex;flex-direction:column;justify-content:center}
+.cf-body .kicker{margin-bottom:8px}
+.cf-body h4{font-size:22px;margin:0 0 8px}
+.cf-body h4 a{color:var(--ink);text-decoration:none}
+.cf-body h4 a:hover{color:var(--g700)}
+.cf-body p{color:var(--mut);font-size:15.5px;margin:0 0 18px}
+.svc-rows{list-style:none;margin:6px 0 0;padding:0;border-top:1px solid var(--line)}
+.svc-rows li{border-bottom:1px solid var(--line)}
+.svc-rows a{display:flex;align-items:center;gap:16px;padding:15px 6px;text-decoration:none;color:var(--ink)}
+.svc-rows a:hover{background:#fff}
+.sr-no{font-family:var(--font-h);font-weight:900;color:var(--g700);font-size:15px;min-width:30px}
+.sr-ic{width:46px;height:46px;flex:none;border-radius:13px;background:var(--g50);border:1px solid var(--line);
+  display:grid;place-items:center;color:var(--g800);transition:background .2s ease,color .2s ease}
+.sr-ic .ic{width:23px;height:23px}
+.svc-rows a:hover .sr-ic{background:var(--g900);color:#fff;border-color:var(--g900)}
+.sr-tx{flex:1;min-width:0}
+.sr-tx b{display:block;font-size:16.5px}
+.sr-tx span{display:block;font-size:13.5px;color:var(--mut)}
+.sr-go{color:var(--org-d);font-weight:900;font-size:18px;transition:transform .2s ease}
+.svc-rows a:hover .sr-go{transform:translateX(-6px)}
+.cluster-cta{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  background:var(--g900);color:#fff;border-radius:18px;padding:30px 34px;position:relative;overflow:hidden}
+.cluster-cta::before{content:"";position:absolute;top:0;bottom:0;left:0;width:120px;background:var(--org);
+  clip-path:polygon(0 0,100% 0,55% 100%,0 100%);opacity:.9}
+.cluster-cta p{margin:0;color:#c6d6de;position:relative}
+.cluster-cta b{color:#fff}
+.cluster-cta .btn{position:relative}
+/* تمييز بصري لكل مجموعة خدمات */
+body.svc-b .page-hero .tick{background:var(--lime)}
+body.svc-c .page-hero .tick{background:var(--org-lt)}
+body.svc-b .svc-points .n{background:var(--g700)}
+body.svc-b .svc-points li:nth-child(even) .n{background:var(--lime);color:var(--g950)}
+body.svc-c .svc-points .n{background:var(--g950)}
+body.svc-c .svc-points li:nth-child(even) .n{background:var(--org)}
+body.svc-b .side-card.dark{background:var(--g800)}
+@media(max-width:760px){
+  .cluster-feat{grid-template-columns:1fr}
+  .cluster.flip .cf-img{order:0}
+  .cf-img{min-height:0;height:210px}
+  .cf-body{padding:26px 24px}
+  .cluster-cta{flex-direction:column;align-items:stretch;text-align:center}
+  .sr-tx span{display:none}
+}
+/* ============================================================
    v2.5 — WhatsApp float + touch dropdown + sidebar comfort
    ============================================================ */
 .ic-fill{fill:currentColor;stroke:none}
@@ -602,5 +663,34 @@ section[id],div[id],form[id]{scroll-margin-top:96px}
 }
 @media (prefers-reduced-motion:reduce){
   #waFloat::before{animation:none}
+}
+/* ============================================================
+   v2.0 REDESIGN — about chapters + timeline + leadership
+   ============================================================ */
+.timeline{position:relative;margin-top:34px}
+.timeline::before{content:"";position:absolute;top:10px;bottom:10px;right:27px;width:2px;background:var(--line)}
+.tl-item{position:relative;display:flex;gap:22px;padding:18px 0}
+.tl-item::before{content:"";position:absolute;top:28px;right:20px;width:16px;height:16px;border-radius:50%;
+  background:var(--paper);border:4px solid var(--org);z-index:1}
+.tl-year{flex:none;width:120px;text-align:center;font-family:var(--font-h);font-weight:900;font-size:19px;
+  color:#fff;background:var(--g900);border-radius:12px;padding:10px 6px;align-self:flex-start}
+.tl-item:nth-child(3) .tl-year{background:var(--org)}
+.tl-item div b{font-size:17.5px}
+.tl-item div p{margin:4px 0 0;color:var(--mut);font-size:15.5px;max-width:60ch}
+.statements{margin-top:30px;border-top:2px solid var(--g900)}
+.statement{display:grid;grid-template-columns:84px 1fr;gap:20px;padding:28px 4px;border-bottom:1px solid var(--line);align-items:start}
+.st-no{font-family:var(--font-h);font-weight:900;font-size:42px;line-height:1;color:var(--g700)}
+.statement:nth-child(2) .st-no{color:var(--org)}
+.statement:nth-child(3) .st-no{color:var(--g900)}
+.statement h3{font-size:21px;margin:0 0 6px}
+.statement p{margin:0;color:var(--ink2);font-size:17.5px;max-width:72ch}
+.cred-h{color:#fff;font-size:16.5px;margin:24px 0 2px}
+.boss .bb .cred-h:first-of-type{margin-top:6px}
+@media(max-width:640px){
+  .timeline::before{right:19px}
+  .tl-item::before{right:12px}
+  .tl-year{width:88px;font-size:15px}
+  .statement{grid-template-columns:56px 1fr;gap:14px}
+  .st-no{font-size:32px}
 }
 
