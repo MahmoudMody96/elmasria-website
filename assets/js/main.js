@@ -129,4 +129,34 @@
       });
     }
   })();
+
+  /* v2.5 — touch dropdown toggle (hover:none devices) + WhatsApp form send */
+  (function(){
+    var noHover = window.matchMedia && window.matchMedia("(hover: none)").matches;
+    if(noHover){
+      $$(".has-drop > a.nl").forEach(function(a){
+        a.addEventListener("click", function(e){
+          var li = a.parentElement;
+          if(!li.classList.contains("open")){ e.preventDefault(); li.classList.add("open"); }
+        });
+      });
+      document.addEventListener("click", function(e){
+        $$(".has-drop.open").forEach(function(li){
+          if(!li.contains(e.target)) li.classList.remove("open");
+        });
+      });
+    }
+    var wa = $("#waSend");
+    if(wa){
+      wa.addEventListener("click", function(){
+        var v = function(id){ var el = document.getElementById(id); return el ? el.value.trim() : ""; };
+        var msg = "طلب جديد من موقع الشركة:%0Aالاسم: " + encodeURIComponent(v("cf-name")) +
+          "%0Aالشركة: " + encodeURIComponent(v("cf-company")) +
+          "%0Aالهاتف: " + encodeURIComponent(v("cf-phone")) +
+          "%0Aالخدمة: " + encodeURIComponent(v("cf-service")) +
+          "%0Aالتفاصيل: " + encodeURIComponent(v("cf-msg"));
+        window.open("https://wa.me/201096087999?text=" + msg, "_blank", "noopener");
+      });
+    }
+  })();
 })();
