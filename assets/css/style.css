@@ -194,7 +194,16 @@ section{padding:84px 0}
 .page-hero{background:var(--g950);color:#fff;position:relative;overflow:hidden}
 .page-hero .ph-bg{position:absolute;inset:0;opacity:.28}
 .page-hero .ph-bg img{width:100%;height:100%;object-fit:cover}
-.page-hero .container{position:relative;padding:66px 0 84px}
+.page-hero .container{position:relative;padding:66px 0 84px;z-index:2}
+/* الرسومات الأصلية للشركة — دمج screen يُخفي الأسود على الداكن */
+.ph-orig{position:absolute;left:0;top:0;bottom:0;width:min(470px,42%);object-fit:contain;
+  object-position:left bottom;mix-blend-mode:screen;opacity:.95;pointer-events:none;z-index:1;
+  -webkit-mask-image:linear-gradient(to left,transparent 0,#000 22%);
+  mask-image:linear-gradient(to left,transparent 0,#000 22%)}
+@media(max-width:760px){
+  .ph-orig{width:100%;object-position:center bottom;opacity:.28;
+    -webkit-mask-image:none;mask-image:none}
+}
 .crumb{display:flex;gap:10px;align-items:center;font-size:14px;color:#c6d6de;margin-bottom:14px;flex-wrap:wrap}
 .crumb a{color:#fff;text-decoration:none}
 .crumb a:hover{color:#ff8a3d}
