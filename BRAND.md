@@ -85,7 +85,7 @@
 - الأيقونة: نفس ملف الشعار عبر `<link rel="icon">`
 - مكتبة الأيقونات: `assets/img/icons.svg` (رموز stroke باسم `i-*` تُستدعى بـ `<use>`)
 - الرسومات الأصلية: `assets/img/orig/orig-*.webp` (أصول الموقع القديم — تُعرض بدمج `screen` على الخلفيات الداكنة فقط عبر `.ph-orig`)
-- **ترقيم نسخ الأصول**: روابط CSS/JS تحمل `?v=N` لكسر الكاش — عند أي تعديل ارفع الرقم في كل الصفحات (الحالي: `v=9`)
+- **ترقيم نسخ الأصول**: روابط CSS/JS تحمل `?v=N` لكسر الكاش — عند أي تعديل ارفع الرقم في كل الصفحات (الحالي: `v=11`)
 - نظام الأيقونات: `assets/img/icons.svg` — تفاصيله في القسم (6)
 - عناصر واجهة التمرير: `#progress` + `#toTop` + `.scroll-cue` — الوسم في كل الصفحات (أداة `_tools/add_scroll_ui.py`) والسلوك في `assets/js/main.js`
 
@@ -95,7 +95,7 @@
 
 | البيان | القيمة |
 |---|---|
-| ملف الأيقونات | `assets/img/icons.svg` (35 رمزًا `<symbol>` على شبكة 24×24، `stroke="currentColor"`) |
+| ملف الأيقونات | `assets/img/icons.svg` (36 رمزًا `<symbol>` على شبكة 24×24، `stroke="currentColor"`) |
 | الاستدعاء من صفحات الجذر | `<use href="assets/img/icons.svg#i-xxx">` |
 | الاستدعاء من صفحات `services/` | `<use href="../assets/img/icons.svg#i-xxx">` |
 
