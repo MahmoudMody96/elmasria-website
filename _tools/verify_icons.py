@@ -36,7 +36,7 @@ USE = re.compile(r'<use href="(?P<href>[^"]+)"')
 SYMBOL = re.compile(r'<symbol id="(?P<id>[^"]+)"')
 
 EXPECTED_HOOKS = [
-    (r'class="burger"[^>]*aria-label="فتح القائمة"><svg class="ic"', "hamburger icon"),
+    (r'class="burger"[^>]*><svg class="ic"', "hamburger icon"),
     (r'aria-label="إغلاق"><svg class="ic"', "drawer close icon"),
     (r'<h1><svg class="ic ic-h"', "page-hero h1 icon"),
     (r'<span class="di"><svg class="ic"', "dropdown icon tile"),

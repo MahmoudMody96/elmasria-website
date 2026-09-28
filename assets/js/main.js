@@ -9,17 +9,27 @@
   var onScroll = function(){ if(head) head.classList.toggle("scrolled", window.scrollY > 8); };
   window.addEventListener("scroll", onScroll, {passive:true}); onScroll();
 
-  /* mobile drawer */
+  /* footer year — every page ships <span id="yy">2026</span> so it never goes stale */
+  var yy = $("#yy");
+  if(yy) yy.textContent = String(new Date().getFullYear());
+
+  /* mobile drawer — keeps aria-expanded / aria-hidden / inert in sync with the CSS state */
   var burger = $("#burger"), drawer = $("#drawer");
   if(burger && drawer){
-    burger.addEventListener("click", function(){ drawer.classList.add("open"); document.body.style.overflow="hidden"; });
+    var setDrawer = function(open){
+      drawer.classList.toggle("open", open);
+      drawer.setAttribute("aria-hidden", open ? "false" : "true");
+      if("inert" in drawer) drawer.inert = !open;
+      burger.setAttribute("aria-expanded", open ? "true" : "false");
+      document.body.style.overflow = open ? "hidden" : "";
+    };
+    setDrawer(false);
+    burger.addEventListener("click", function(){ setDrawer(true); });
     drawer.addEventListener("click", function(e){
-      if(e.target.closest("[data-close]") || e.target.classList.contains("scrim")){
-        drawer.classList.remove("open"); document.body.style.overflow="";
-      }
+      if(e.target.closest("[data-close]") || e.target.classList.contains("scrim")) setDrawer(false);
     });
     document.addEventListener("keydown", function(e){
-      if(e.key === "Escape"){ drawer.classList.remove("open"); document.body.style.overflow=""; }
+      if(e.key === "Escape") setDrawer(false);
     });
   }
 

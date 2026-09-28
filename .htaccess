@@ -1,14 +1,19 @@
 # EL MASRIA — 301 redirect map (old WordPress URLs -> new site)
 # Generated from crawl of https://elmasria-eg.com (wp-sitemap, 5 indexed URLs)
+#
+# ⚠️ The production deployment is nginx (Coolify) and nginx IGNORES .htaccess,
+# so the live map lives in nginx.conf. This file is kept for Apache hosting only.
+# Patterns here are the *decoded* UTF-8 paths because mod_rewrite matches the
+# %-decoded URL-path — the old %D8%A7… patterns could never match anything.
 <IfModule mod_rewrite.c>
 RewriteEngine On
 # /الخدمات/ (empty shell) -> services hub
-RewriteRule ^%D8%A7%D9%84%D8%AE%D8%AF%D9%85%D8%A7%D8%AA/?$ /services/ [R=301,L]
+RewriteRule ^الخدمات/?$ /services/ [R=301,L]
 # /من-نحن/ -> about page
-RewriteRule ^%D9%85%D9%86-%D9%86%D8%AD%D9%86/?$ /about.html [R=301,L]
+RewriteRule ^من-نحن/?$ /about.html [R=301,L]
 # /اتصل-بنا/ -> contact page
-RewriteRule ^%D8%A7%D8%AA%D8%B5%D9%84-%D8%A8%D9%86%D8%A7/?$ /contact.html [R=301,L]
+RewriteRule ^اتصل-بنا/?$ /contact.html [R=301,L]
 # /خدمات-الحماية-المدنية/ -> new civil defense service page
-RewriteRule ^%D8%AE%D8%AF%D9%85%D8%A7%D8%AA-%D8%A7%D9%84%D8%AD%D9%85%D8%A7%D9%8A%D8%A9-%D8%A7%D9%84%D9%85%D8%AF%D9%86%D9%8A%D8%A9/?$ /services/civil-defense.html [R=301,L]
+RewriteRule ^خدمات-الحماية-المدنية/?$ /services/civil-defense.html [R=301,L]
 </IfModule>
 ErrorDocument 404 /404.html
