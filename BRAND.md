@@ -149,7 +149,7 @@
 | النوع | موقع ثابت على nginx — **تطبيق مدار داخل Coolify** (يبني من GitHub مباشرة، لا حاوية يدوية) |
 | التطبيق | مشروع `EL-MASRIA` برقم `y2wavkldq2sw7fzjbvlbxfez` — تطبيق `elmasria-web` برقم `v2qirvm8bovh8uvyuel10fio` (build_pack: dockerfile من `main`) |
 | ملفات البناء | `Dockerfile` (nginx:alpine) · `nginx.conf` (`try_files` + `error_page 404 /404.html`) · `.dockerignore` |
-| آخر نشر | 2026-09-29 — كوميت `122adb1` — نشر Coolify من `main` (الهوية الخضراء + تصحيح الإملاء، `?v=17`) — تحقق حي: `/=200` + `style.css?v=17` + توكنز خضراء حية |
+| آخر نشر | 2026-09-29 — كوميت `01ff76f` — نشر Coolify من `main` (حزمة صور العميل + هيرو جديد + تجميع IA + mini-landings بأسئلة موثقة + تحديد تلقائي، `?v=18`) — تحقق حي: `/=200` + `style.css?v=18` + `pack/01=200` + `safety-faq` + `preselect-JS` |
 
 ### قبل أي كوميت يمسّ الواجهة
 1. `python _tools/verify_icons.py` — لا إيموجي متبقٍ، كل مراجع الـsprite سليمة، ووسم واجهة التمرير في كل الصفحات.
