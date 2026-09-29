@@ -188,4 +188,33 @@
       });
     }
   })();
+
+  /* v3.0 — home services filter
+     يتحكم في ظهور مجموعات الخدمات فقط (.svc-group[data-group]) ولا يمس أي قسم آخر.
+     عند إظهار مجموعة نُجبر .reveal داخلها على الحالة الظاهرة، لأن عنصرًا داخل
+     مجموعة مخفية لا يمرّ عليه IntersectionObserver فيبقى شفافًا للأبد. */
+  (function(){
+    var filters = $$(".filters .filter");
+    var groups = $$(".svc-group[data-group]");
+    if(!filters.length || !groups.length) return;
+    function apply(f){
+      groups.forEach(function(g){
+        var on = (f === "all" || g.getAttribute("data-group") === f);
+        g.hidden = !on;
+        if(on) $$(".reveal", g).forEach(function(el){ el.classList.add("in"); });
+      });
+    }
+    filters.forEach(function(btn){
+      btn.setAttribute("aria-pressed", btn.classList.contains("active") ? "true" : "false");
+      btn.addEventListener("click", function(){
+        var f = btn.getAttribute("data-filter") || "all";
+        filters.forEach(function(b){
+          var on = (b === btn);
+          b.classList.toggle("active", on);
+          b.setAttribute("aria-pressed", on ? "true" : "false");
+        });
+        apply(f);
+      });
+    });
+  })();
 })();
