@@ -73,6 +73,24 @@
   /* contact form: validate then open mail client (static hosting, no backend) */
   var form = $("#contactForm");
   if(form){
+    /* preselect service when arriving from a service page (?service=slug) */
+    try{
+      var slug = (new URLSearchParams(window.location.search).get("service") || "").replace(/\.html?$/,"");
+      var svcMap = {"safety":"السلامة والصحة المهنية","civil-defense":"الحماية المدنية",
+        "iso":"التأهيل للحصول على شهادات الايزو","environmental":"الدراسات البيئية",
+        "pest-control":"خدمة مكافحه الآفات والحشرات","cleaning":"خدمات اعمال النظافة",
+        "landscape":"اللاند سكيب وتنسيق الحدائق","clinic":"خدمات العيادة",
+        "manpower":"تعيين العمال بالأقسام الانتاجية لكل التخصصات",
+        "construction":"اعمال المقاولات والانشاءات","football-fields":"انشاء وصيانة ملاعب كرة القدم"};
+      if(svcMap[slug]){
+        var sel = $("#cf-service");
+        if(sel){
+          for(var i=0;i<sel.options.length;i++){
+            if(sel.options[i].text === svcMap[slug]){ sel.selectedIndex = i; break; }
+          }
+        }
+      }
+    }catch(_){}
     form.addEventListener("submit", function(e){
       e.preventDefault();
       var ok = true;

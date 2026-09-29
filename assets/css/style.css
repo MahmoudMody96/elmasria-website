@@ -805,8 +805,30 @@ body.svc-b .svc-points li:nth-child(even) .n{background:none;color:var(--g800)}
   border-radius:14px;padding:16px 20px;font-size:24px;font-weight:800;text-decoration:none}
 .tel-first a span{font-size:13px;font-weight:700;background:var(--org);border-radius:100px;
   padding:4px 14px}
+/* --- audience line + FAQ (verified content only) --- */
+.aud{display:flex;gap:10px;align-items:flex-start;background:var(--g50);
+  border:1px solid var(--line);border-radius:12px;padding:12px 18px;
+  font-size:15.5px;color:var(--ink2);margin-top:16px}
+.aud::before{content:"";width:10px;height:10px;background:var(--org);border-radius:2px;
+  flex:none;margin-top:8px}
+.aud b{color:var(--g800)}
+.faq-list{display:grid;gap:12px;margin-top:22px}
+.faq{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.faq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;
+  align-items:center;gap:12px;padding:16px 20px;font-family:var(--font-h);
+  font-weight:800;font-size:16.5px;color:var(--ink)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:22px;color:var(--org);font-weight:900;line-height:1;flex:none}
+.faq[open] summary::after{content:"–"}
+.faq[open]{border-color:var(--g700)}
+.faq summary + p{margin:0;padding:0 20px 18px;color:var(--ink2);font-size:16px}
 /* --- drawer service dividers --- */
 .drawer .dl.dsvc{border-top:1px dashed var(--line);font-size:14.5px}
+.drop-h{grid-column:1/-1;font-family:var(--font-h);font-weight:800;font-size:13px;
+  color:var(--g800);padding:10px 12px 0}
+.drop-h:first-child{padding-top:2px}
+.dl-h{display:block;font-family:var(--font-h);font-weight:800;font-size:13.5px;
+  color:var(--g800);padding:12px 4px 2px;border-top:1px solid var(--line);margin-top:8px}
 /* --- footer restraint --- */
 .foot-brand p{font-size:14.5px}
 /* --- Edition 3.0 responsive --- */
