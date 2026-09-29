@@ -146,19 +146,18 @@
 | البيان | القيمة |
 |---|---|
 | الرابط الحالي | `https://elmasria.aidy.site` |
-| النوع | موقع ثابت على nginx — صورة في ريجستري الخادم المحلي `127.0.0.1:5000/elmasria:<N>` |
-| الحاوية | `elmasria-web` على شبكة `coolify` + راوترات Traefik حرفية (`http-elmasria` / `https-elmasria`) |
+| النوع | موقع ثابت على nginx — **تطبيق مدار داخل Coolify** (يبني من GitHub مباشرة، لا حاوية يدوية) |
+| التطبيق | مشروع `EL-MASRIA` برقم `y2wavkldq2sw7fzjbvlbxfez` — تطبيق `elmasria-web` برقم `v2qirvm8bovh8uvyuel10fio` (build_pack: dockerfile من `main`) |
 | ملفات البناء | `Dockerfile` (nginx:alpine) · `nginx.conf` (`try_files` + `error_page 404 /404.html`) · `.dockerignore` |
-| الوسم الحالي | `:7` — **وسم جديد كل نشر** (إعادة استخدام وسم = الخادم يظن الصورة محدَّثة) |
-| آخر نشر | 2026-09-28 — كوميت `2bfaae2` — الصورة `elmasria:7` (تحقق حي: `/=200` + `style.css?v=11` + `logo-emblem.png=200` + `icons.svg=200` + `safety.html=200` + مسار وهمي `=404` + `internal_sni=200` + صفر أخطاء في سجل البروكسي) |
+| آخر نشر | 2026-09-29 — كوميت `27ef987` — نشر Coolify من `main` (تحقق حي: `/=200` + `style.css?v=12` + `safety.html=200` + `projects.html=200` + شعار شريك `=200` + مسار وهمي `=404` + صفر أخطاء في سجل البروكسي) — الحاوية اليدوية `elmasria-web` وصور `127.0.0.1:5000/elmasria:*` حُذفت نهائيًا |
 
 ### قبل أي كوميت يمسّ الواجهة
 1. `python _tools/verify_icons.py` — لا إيموجي متبقٍ، كل مراجع الـsprite سليمة، ووسم واجهة التمرير في كل الصفحات.
 2. إن تغيّر `assets/css/style.css` أو `assets/js/main.js`: `python _tools/bump_css_version.py` (المتصفح يكاشفهما 7 أيام بسبب `expires 7d`).
 3. `python _tools/normalize_eol.py` — إعادة نهايات أسطر الـHTML إلى CRLF كباقي المستودع.
 
-### النشر (دقيقتان — السيرفر يبني من GitHub)
-`git push origin main` ثم clone على السيرفر → `docker build -t 127.0.0.1:5000/elmasria:<N+1>` → `docker push` → `docker rm -f elmasria-web` → `docker run` بنفس الـlabels → تحقق. الأوامر الجاهزة كاملة في `COOLIFY-AGENT-GUIDE.md` § ٩.١.
+### النشر (من لوحة Coolify أو API)
+`POST /api/v1/deploy` برقم التطبيق `v2qirvm8bovh8uvyuel10fio` — يبني من `main` وينشر تلقائيًا. لا نشر يدوي بعد الآن (النمط اليدوي القديم في `COOLIFY-AGENT-GUIDE.md` § ٩ أُبطل). للتحقق: `/=200` + `style.css?v=<الحالي>` + مسار وهمي `=404`.
 
 ### مراجع التوثيق
 - `COOLIFY-AGENT-GUIDE.md` — دليل الوكيل الكامل لبيئة الخادم: Traefik v3.6، Coolify v4.3.23، 17 فخًا مدفوع الثمن، مسارات النشر عبر API، ونمط النشر اليدوي لموقع ثابت (+ ثوابت هذا الموقع في § ٩.١).
