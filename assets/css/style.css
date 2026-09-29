@@ -387,11 +387,12 @@ section{padding:96px 0}
   border:1px solid var(--line);box-shadow:var(--sh-lg)}
 .chair-card>*{position:relative;z-index:2}
 /* لوحة الصورة — التدرّج يضمن قراءة الاسم فوق أي صورة */
-/* صورة الرئيس 293px فقط، فالبطاقة الطويلة كانت تكبّرها ~2.4x. الحل: البورتريه
-   بحد أقصى 460px (≈1.6x) وما تحته خلفية ضبابية من الصورة نفسها بلا فراغ ميت. */
+/* المصدر 1254×1254 (مربّع) والبورتريه معروض بحد أقصى 460px عرضًا/طولًا.
+   النسخ المُهيّأة: chairman-480/960.webp — وما تحت الصورة خلفية ضبابية منها
+   نفسها (نسخة 480 تكفي لأنها مموّهة 30px) فمفيش فراغ ميت. */
 .cc-side{position:relative;min-height:420px;overflow:hidden;background:var(--g850)}
 .cc-side::before{content:"";position:absolute;inset:0;z-index:0;
-  background:url(../img/chairman.png) center 25%/cover no-repeat;
+  background:url(../img/chairman-480.webp) center 25%/cover no-repeat;
   filter:blur(30px);transform:scale(1.15);opacity:.5}
 .cc-side>img{position:absolute;top:0;left:0;width:100%;height:min(100%,460px);
   object-fit:cover;object-position:50% 18%;z-index:1}
@@ -768,7 +769,20 @@ section[id],div[id],form[id]{scroll-margin-top:96px}
   .cta-band{grid-template-columns:1fr}
   .cta-btns{justify-content:flex-start}
   .chair-card{grid-template-columns:1fr}
-  .cc-side{min-height:280px}
+  /* لوحة القيادة على الشاشات الضيقة: الصورة في نطاق خاص بها والاسم تحتها —
+     بلا تراكب. السبب: كتلة الاسم (اسم + شريحة + اقتباس + زر ≈ 225px) كانت تُرسم
+     فوق الصورة فيقع الاسم على وجه الرئيس. ده عطل قديم مش من الصورة الجديدة —
+     ظهر في لقطة v23 بالصورة القديمة بنفس الشكل.
+     مفيش ارتفاع ثابت يحلّها: `cover` بيغيّر مقاس الوجه مع عرض الحاوية، فالنسبة
+     بين موضع الوجه وارتفاع اللوحة بتتغيّر من موبايل لتابلت. الحل بالتدفّق (flow)
+     مضمون على كل العروض — التحقق بلقطات 390/768/1000 (v24). */
+  .cc-side{--ph:min(92vw,440px);min-height:0}
+  .cc-side>img{position:relative;top:auto;left:auto;display:block;
+    width:100%;height:var(--ph);object-fit:cover;object-position:50% 26%}
+  .cc-side::before{display:none}
+  .cc-side::after{inset:0 0 auto 0;height:var(--ph);
+    background:linear-gradient(to top,rgba(4,18,29,.9) 0%,rgba(4,18,29,.28) 40%,transparent 70%)}
+  .cc-meta{position:relative;inset:auto;padding:22px 18px 26px}
   .kstats{grid-template-columns:1fr 1fr;gap:10px}
   .svc-layout{grid-template-columns:1fr}
   .svc-side{position:static}
