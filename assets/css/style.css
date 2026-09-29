@@ -510,6 +510,7 @@ table.info tr td:first-child{font-weight:800;color:var(--g900);width:34%}
 .partner-tile img.plogo + .pm{display:none}
 .partner-tile b{display:block;font-size:15.5px;line-height:1.6}
 .partner-tile small{color:var(--mut);font-size:12.5px}
+.chair-photo{width:120px;height:120px;border-radius:50%;object-fit:cover;flex:none;background:var(--g100);border:3px solid var(--org)}
 /* احترام تقليل الحركة */
 @media (prefers-reduced-motion:reduce){
   .hero-inner>*{opacity:1!important;transform:none!important;animation:none!important}
