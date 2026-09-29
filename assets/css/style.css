@@ -21,8 +21,10 @@
   --g800:#0d2a3e;
   /* تدرّج السماوي — نصوص وروابط وأيقونات على الخلفيات الفاتحة */
   --g700:#0b5e86;
-  --g600:#0088b8;
   --cyan:#00a3d5;
+  /* سماوي داكن لحالة hover على الأزرار — الأبيض عليه 5.10:1 (يمرّ AA).
+     --g600 الأصلي #0088b8 كان 4.03:1 ويسقط المعيار. */
+  --cyan-d:#00779c;
   --cyan-soft:#e7f8fc;
   /* قيم اللوجو الحرفية — للعناصر الملتصقة بالشعار والزخارف فقط */
   --logo-blue:#00a3d5;
@@ -171,7 +173,7 @@ section{padding:96px 0}
 /* الأساسي — سماوي بنص داكن (6.0:1) */
 .btn-primary,.btn-org{background:var(--cyan);color:var(--g950);
   box-shadow:0 16px 34px -16px rgba(0,163,213,.8)}
-.btn-primary:hover,.btn-org:hover{background:var(--g600);color:#fff}
+.btn-primary:hover,.btn-org:hover{background:var(--cyan-d);color:#fff}
 /* الثانوي — أزرق داكن */
 .btn-navy,.btn-green{background:var(--g900);color:#fff;box-shadow:var(--sh-s)}
 .btn-navy:hover,.btn-green:hover{background:var(--g800)}
@@ -249,7 +251,9 @@ section{padding:96px 0}
 .hstat{padding:18px 20px;border:1px solid var(--line-d);background:rgba(255,255,255,.06);border-radius:18px}
 .hstat b{display:block;font-family:var(--font-h);font-size:23px;line-height:1.2;color:#fff}
 .hstat b em{font-style:normal;color:var(--cyan)}
-.hstat span{display:block;margin-top:7px;font-size:12.5px;color:#a8bdc8;line-height:1.6}
+/* الوسم بعد الرقم فقط — لا `.hstat span`، وإلا أصاب الـspan المتداخل
+   داخل <b> فصار الرقم display:block (فينكسر «27+» على سطرين) وبحجم 12.5px رمادي */
+.hstat > b + span{display:block;margin-top:7px;font-size:12.5px;color:#a8bdc8;line-height:1.6}
 
 /* ---------- page hero (inner) ---------- */
 .page-hero{background:var(--g900);color:#fff;position:relative;overflow:hidden}
@@ -282,7 +286,7 @@ section{padding:96px 0}
 .exp-card{position:absolute;bottom:26px;right:-14px;background:var(--g900);color:#fff;border-radius:18px;
   padding:16px 24px;box-shadow:var(--sh-lg);display:flex;gap:14px;align-items:center;border-inline-start:5px solid var(--cyan)}
 .exp-card b{font-family:var(--font-h);font-size:30px;line-height:1}
-.exp-card span{font-size:13px;color:#b9cfdb}
+.exp-card > b + span{font-size:13px;color:#b9cfdb}
 
 /* ---------- services : filters + groups + tiles ---------- */
 .filters{display:flex;gap:9px;flex-wrap:wrap;margin:0 0 38px}
@@ -386,15 +390,69 @@ section{padding:96px 0}
 .sector span{font-size:13.5px;color:#c3d6e1}
 
 /* ---------- chairman / leadership ---------- */
-.boss{background:var(--g900);border-radius:var(--r-lg);overflow:hidden;display:grid;grid-template-columns:340px 1fr;color:#e8f1f6;
-  box-shadow:var(--sh-lg)}
-.boss .bp{background:var(--g850);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:46px 30px;text-align:center;position:relative}.boss .bp h3{color:#fff;margin:0}
-.boss .bp span{color:var(--cyan);font-size:14px;font-weight:700}
-.boss .bb{padding:46px}
-.boss .bb p{color:#bfd3de}
-.cred{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px;list-style:none;padding:0}
-.cred li{background:rgba(255,255,255,.06);border:1px solid var(--line-d);border-radius:12px;padding:11px 15px;font-size:14px;color:#e3eef4}
-.cred li::before{content:"◆ ";color:var(--cyan);font-size:11px}.chair-photo{width:120px;height:120px;border-radius:50%;object-fit:cover;flex:none;background:var(--cyan-soft);border:3px solid var(--cyan)}
+/* بطاقة القيادة — تُستخدم في الرئيسية (06 · القيادة) وفي «من نحن» (04 · القيادة).
+   عمودان: لوحة الصورة ثم المحتوى. في RTL يأخذ الأول العمود الأيمن فتقع الصورة يمينًا. */
+.chair-card{position:relative;overflow:hidden;border-radius:var(--r-lg);background:var(--g900);
+  color:#e8f1f6;display:grid;grid-template-columns:320px 1fr;box-shadow:var(--sh-lg)}
+.chair-card::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:36px 36px}
+.chair-card>*{position:relative;z-index:2}
+/* لوحة الصورة — التدرّج يضمن قراءة الاسم فوق أي صورة */
+/* صورة الرئيس 293px فقط، فالبطاقة الطويلة كانت تكبّرها ~2.4x. الحل: البورتريه
+   بحد أقصى 460px (≈1.6x) وما تحته خلفية ضبابية من الصورة نفسها بلا فراغ ميت. */
+.cc-side{position:relative;min-height:420px;overflow:hidden;background:var(--g850)}
+.cc-side::before{content:"";position:absolute;inset:0;z-index:0;
+  background:url(../img/chairman.png) center 25%/cover no-repeat;
+  filter:blur(30px);transform:scale(1.15);opacity:.5}
+.cc-side>img{position:absolute;top:0;left:0;width:100%;height:min(100%,460px);
+  object-fit:cover;object-position:50% 18%;z-index:1}
+.cc-side::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:linear-gradient(to top,rgba(4,18,29,.97) 0%,rgba(4,18,29,.80) 30%,
+    rgba(4,18,29,.18) 62%,transparent 82%)}
+.cc-meta{position:absolute;inset:auto 0 0 0;z-index:3;padding:20px 18px;text-align:center}
+.cc-meta h3{color:#fff;margin:0;font-size:19px;line-height:1.3}
+.cc-meta .role-chip{margin-top:9px;font-size:12.5px;padding:5px 16px}
+.cc-meta .btn{margin-top:13px}
+.cc-quote{margin:13px 0 0;font-size:12.5px;line-height:1.65;color:#cfe0ea;text-align:start;
+  border-inline-start:2px solid var(--lime);padding-inline-start:10px}
+/* محتوى البطاقة */
+.cc-body{padding:38px 34px;display:flex;flex-direction:column}
+.cc-body .kicker{color:var(--cyan);margin-bottom:12px}
+.cc-body .kicker::before{background:var(--lime)}
+.cc-body h3{color:#fff;font-size:clamp(20px,2.3vw,26px);line-height:1.45;margin:0 0 14px}
+.cc-body p{color:#bfd3de;margin:0}
+.cc-body .svc-link{margin-top:22px;color:var(--cyan);align-self:flex-start}
+.cc-body .svc-link:hover{color:#fff}
+.cc-actions{margin-top:22px;display:flex;gap:12px;flex-wrap:wrap}
+/* أرقام الملف المهني — أيقونة فوق الرقم فوق الوسم */
+.kstats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0 0}
+.kstat{text-align:center}
+.kstat .ki{width:46px;height:46px;margin:0 auto 10px;border-radius:14px;display:grid;place-items:center;
+  background:rgba(255,255,255,.07)}
+.kstat .ki .ic{width:22px;height:22px}
+.kstat b{display:block;font-family:var(--font-h);font-size:24px;line-height:1.1;color:#fff}
+.kstat > b + span{display:block;margin-top:5px;color:#a8bdc8;font-size:12px;line-height:1.5}
+.kstat.cyan .ki{color:var(--cyan)}
+.kstat.lime .ki{color:var(--lime)}
+.kstat.org .ki{color:var(--org-lt)}
+/* قائمة المؤهلات — أيقونة لايم + النص، عمودان */
+.cred-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:18px 0 0;list-style:none;padding:0}
+.cred-item{display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.06);
+  border:1px solid var(--line-d);border-radius:12px;padding:9px 12px;font-size:12.5px;
+  line-height:1.45;color:#e3eef4}
+.cred-item .ci{width:30px;height:30px;flex:none;border-radius:9px;display:grid;place-items:center;
+  background:rgba(188,216,0,.14);color:var(--lime)}
+.cred-item .ci .ic{width:16px;height:16px}
+/* قسم فاتح بزخارف: صورة صناعية باهتة أعلى + دائرة لايم في الزاوية */
+.sec-lead{position:relative;overflow:hidden;background:var(--paper)}
+.sec-lead::before{content:"";position:absolute;inset:0 0 auto 0;height:340px;pointer-events:none;
+  background:url(../img/photos/industrial-plant-960.webp) center 30%/cover no-repeat;opacity:.10;
+  -webkit-mask-image:linear-gradient(to bottom,#000,transparent);
+  mask-image:linear-gradient(to bottom,#000,transparent)}
+.sec-lead::after{content:"";position:absolute;inset-inline-start:-90px;top:-90px;width:260px;height:260px;
+  border-radius:50%;background:var(--lime);opacity:.13;pointer-events:none}
+.sec-lead .container{position:relative;z-index:1}
 .role-chip{display:inline-block;margin-top:10px;background:var(--org-d);color:#fff;
   font-weight:800;font-size:14px;border-radius:100px;padding:6px 20px;letter-spacing:.4px}
 
@@ -728,7 +786,9 @@ section[id],div[id],form[id]{scroll-margin-top:96px}
   .proc-steps{grid-template-columns:1fr}
   .cta-band{grid-template-columns:1fr}
   .cta-btns{justify-content:flex-start}
-  .boss{grid-template-columns:1fr}
+  .chair-card{grid-template-columns:1fr}
+  .cc-side{min-height:280px}
+  .kstats{grid-template-columns:1fr 1fr;gap:10px}
   .svc-layout{grid-template-columns:1fr}
   .svc-side{position:static}
   .foot-grid{grid-template-columns:1fr 1fr}
@@ -748,7 +808,7 @@ section[id],div[id],form[id]{scroll-margin-top:96px}
   .sec-head{display:block}
   .sec-head>div{max-width:none}
   .sec-head .sec-sub{margin-top:12px;max-width:none}
-  .boss .chair-photo{width:150px;height:150px}
+  .cc-body{padding:28px 22px}
   .cluster-feat{grid-template-columns:1fr}
   .cluster.flip .cf-img{order:0}
   .cf-img{min-height:0;height:220px}
@@ -771,7 +831,7 @@ section[id],div[id],form[id]{scroll-margin-top:96px}
   .hero-stats{grid-template-columns:1fr 1fr;gap:9px}
   .hstat{padding:14px}
   .hstat b{font-size:19px}
-  .hstat span{font-size:11.5px}
+  .hstat > b + span{font-size:11.5px}
   /* بلاطات أرقام "من نحن" على الشاشات الصغيرة — أيقونة وخطوط أصغر حتى لا يلتف النص ٣ أسطر */
   .stats{gap:9px}
   .stat{padding:14px;gap:11px;border-radius:14px}
@@ -788,7 +848,7 @@ section[id],div[id],form[id]{scroll-margin-top:96px}
   .topbar .tb-hide{display:none}
   .cta-band{padding:36px 26px}
   .foot-grid{grid-template-columns:1fr}
-  .cred{grid-template-columns:1fr}
+  .cred-list{grid-template-columns:1fr}
   .rel-grid{grid-template-columns:1fr}
   .exp-card{right:8px;left:8px}
   .timeline::before{right:19px}

@@ -4,5 +4,6 @@ _tools/shots/
 _tools/_superseded/
 _tools/_photo-src/
 __pycache__/
+.workbuddy-ai/
 
 
