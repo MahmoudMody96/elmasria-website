@@ -166,7 +166,7 @@
           "%0Aالهاتف: " + encodeURIComponent(v("cf-phone")) +
           "%0Aالخدمة: " + encodeURIComponent(v("cf-service")) +
           "%0Aالتفاصيل: " + encodeURIComponent(v("cf-msg"));
-        window.open("https://wa.me/201096087999?text=" + msg, "_blank", "noopener");
+        window.open("https://wa.me/201000101040?text=" + msg, "_blank", "noopener");
       });
     }
   })();
