@@ -1,5 +1,11 @@
 """Remove the orphaned photo assets agreed in v25, with assertions at every step.
 
+⚠️ سكربت لمرة واحدة (v25) ومحصوز على `assets/img/photos/` وبيفحص `.html/.css/.js` بس
+   **وبيتخطّى `_tools`**. الاستخدام العام بقى `_tools/verify_no_orphan_assets.py`،
+   اللي بيفحص كل ملفات النص (بما فيها `*.md` والسكربتات) على كل `assets/`.
+   سيب ده هنا كسجل تاريخي — ما تعمّمش منطقه على مجلدات تانية.
+
+
 Safety model (why this is reversible):
   * every removed set has its untouched JPEG original in _tools/_photo-src/ (gitignored),
     so the WebP variants can be regenerated with _tools/gen_slot_photos_v25.py-style code;

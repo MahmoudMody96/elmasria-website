@@ -1,9 +1,6 @@
-﻿stitch_modern_website_redesign_2026/
+# مجلدات محلية مش بتترفع على git
 elmasria_website_images_pack/
 _tools/shots/
-_tools/_superseded/
 _tools/_photo-src/
 __pycache__/
 .workbuddy-ai/
-
-

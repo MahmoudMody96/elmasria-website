@@ -1,0 +1,14 @@
+# نطاق الموقع — مصدر واحد للحقيقة.
+#
+# أي رابط مطلق في الموقع بيوصّف *هوية* الموقع (canonical · og:url · og:image ·
+# twitter:image · JSON-LD url · sitemap · robots) لازم يشير للنطاق المكتوب تحت.
+# مفيش نطاق تاني مكتوب في أي ملف تاني في المستودع.
+#
+# لتغيير النطاق:
+#     python _tools/set_origin.py https://new-domain.com
+#     python _tools/set_origin.py --check      # لازم يخرج بـ0
+#     git commit -am "chore: point the site at the new domain" && git push
+#
+# السطور اللي بتبدأ بـ# تعليقات — السكربت بياخد أول سطر مش تعليق ومش فاضي.
+
+https://elmasria.aidy.site

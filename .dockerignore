@@ -1,10 +1,7 @@
-﻿.git
+# حاجات مش بتدخل صورة Docker (الصورة ستاتيك: HTML/CSS/JS/صور + nginx فقط)
+.git
 .github
 _tools
-stitch_modern_website_redesign_2026
 *.md
 .gitignore
 .dockerignore
-.htaccess
-
-
