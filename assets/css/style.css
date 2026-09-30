@@ -109,8 +109,11 @@ section{padding:96px 0}
 .about::after{content:"";position:absolute;inset-inline-start:-70px;bottom:-70px;width:200px;height:200px;
   border-radius:50%;background:var(--cyan);opacity:.07;pointer-events:none;z-index:0}
 .about-image{position:relative;border-radius:18px;overflow:hidden;min-height:400px;z-index:1}
-/* object-position مضبوط على مجموعة الفريق في الصورة (القص أفقي فقط) */
-.about-image img{width:100%;height:100%;object-fit:cover;object-position:55% 50%}
+/* القص: المصدر 1024×1536 (عمودي). على الديسكتوب يُعرض الارتفاع كاملًا ويُقص العرض فقط
+   (overflow_y = 0 فالقيمة الرأسية بلا أثر)، وعند ≤1020px ينقلب القص إلى رأسي فيُعرض ~45%
+   من الارتفاع فقط. القيمة 48% هي الوحيدة التي تُبقي الخوذة كاملة وشعار «المصرية» على السترة
+   كاملًا عند 1020 و390 معًا — 45% تقصّ الشعار، و52% تقصّ قمة الخوذة. مُتحقَّق منها بمحاكاة cover. */
+.about-image img{width:100%;height:100%;object-fit:cover;object-position:50% 48%}
 .about-copy{padding:26px 22px;position:relative;z-index:1}
 .about-copy h3{font-size:clamp(22px,2.8vw,29px);line-height:1.4;margin:0 0 14px}
 .about-copy p{margin:0;color:var(--mut);font-size:16px}
@@ -247,6 +250,15 @@ section{padding:96px 0}
 .page-hero{background:var(--g900);color:#fff;position:relative;overflow:hidden}
 .page-hero .ph-bg{position:absolute;inset:0;opacity:.32}
 .page-hero .ph-bg img{width:100%;height:100%;object-fit:cover}
+/* قصّ خاص بهيرو صفحة التواصل وحده. القاعدة أعلاه مشتركة في 17 صفحة، وصور pack
+   نسبها مختلفة (4.17 و2.26 و2.72) وبعضها بيُقصّ أفقيًا — فتعديلها كان هيغيّر
+   هيرو 15 صفحة بلا داعي.
+   المصدر 1672×941 (1.78) والصندوق أعرض بكتير (3.63 عند 1280) فيُقصّ رأسيًا ويُعرض
+   العرض كاملًا — يعني object-position الأفقي بلا أثر عند ≥768px، وعند 390px ينقلب
+   لقصّ أفقي. 40% 40%: رأسيًا تُبقي لافتة SAFETY FIRST كاملة مع العمال (50% تقصّها)،
+   وأفقيًا تُبقي الخوذة الصفراء بشعار «المصرية» في المنطقة الباينة يسار الهيرو
+   (النص والتدرّج الداكن على اليمين). مُتحقَّق منها عند أقصى حركة Ken Burns (scale 1.1). */
+.page-hero.hero-contact .ph-bg img{object-position:40% 40%}
 .page-hero::after{content:"";position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(to left,rgba(4,18,29,.92) 22%,rgba(4,18,29,.62) 60%,rgba(4,18,29,.30))}
 .page-hero .container{position:relative;padding:70px 0 88px;z-index:2}
@@ -338,7 +350,9 @@ section{padding:96px 0}
 /* لوحة بصرية + بنود (نمط «لماذا المصرية» الجديد) */
 .feature{display:grid;grid-template-columns:.85fr 1.15fr;gap:22px;align-items:stretch}
 .visual{position:relative;min-height:480px;border-radius:var(--r-lg);overflow:hidden}
-.visual img{width:100%;height:100%;object-fit:cover}
+/* 50% 50% مُتحقَّق منها على المصدر العمودي 1024×1536: رؤوس الفريق الأربعة
+   والمخطط تبقى داخل الإطار عند 1280 و1020 و390 (الافتراضي، لكن مثبَّتة صراحةً هنا). */
+.visual img{width:100%;height:100%;object-fit:cover;object-position:50% 50%}
 .visual::after{content:"";position:absolute;inset:0;
   background:linear-gradient(180deg,rgba(4,18,29,0) 38%,rgba(4,18,29,.92) 100%)}
 .caption{position:absolute;bottom:26px;right:26px;left:26px;z-index:2;color:#fff}
@@ -763,8 +777,12 @@ section[id],div[id],form[id]{scroll-margin-top:96px}
   .feature{grid-template-columns:1fr}
   .grid2,.about{grid-template-columns:1fr}
   .about-copy{padding:6px 14px 22px}
-  .about-image{min-height:280px}
-  .visual{min-height:360px}
+  /* الشكل ثابت 3/2 مع min-height حتى لا يتحكّم الأصل الرأسي (1024×1536) في ارتفاع الكتلة.
+     بلا aspect-ratio كان height:100% على الصورة لا يقيّد شيئًا لأن الأب ارتفاعه auto،
+     فيرسم المتصفح الصورة بنسبتها الطبيعية → كتلة 908×1362 بدل 908×606 (ارتفاع الصفحة +757px).
+     بهذين السطرين: height = max(min-height, width/1.5) = نفس هندسة ما قبل التبديل بالحرف. */
+  .about-image{min-height:280px;aspect-ratio:3/2}
+  .visual{min-height:360px;aspect-ratio:3/2}
   .proc-steps{grid-template-columns:1fr}
   .cta-band{grid-template-columns:1fr}
   .cta-btns{justify-content:flex-start}
