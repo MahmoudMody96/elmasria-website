@@ -41,7 +41,7 @@ EXPECTED_HOOKS = [
     (r'<h1><svg class="ic ic-h"', "page-hero h1 icon"),
     (r'<span class="di"><svg class="ic"', "dropdown icon tile"),
     (r'<span class="svc-ico"><svg class="ic"', "service card badge icon"),
-    # checklist removed 2026-09-29: old site (elmasria-eg.com) has no checklist block,
+    # checklist removed 2026-09-29: the old site has no checklist block,
     # so the tick hook is intentionally absent (i-check stays in sprite, unused).
     (r'<span><svg class="ic" aria-hidden="true" focusable="false"><use href="[^"]*#i-arrow-left"',
      "side-list arrow icon"),

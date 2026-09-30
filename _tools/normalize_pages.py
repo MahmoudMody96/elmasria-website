@@ -44,7 +44,14 @@ PAGES = [
 SOCIAL_PAGES = [p for p in PAGES if p != "404.html"]
 
 SITE_NAME = "EL MASRIA — المصرية للسلامة والصحة المهنية"
-COVER = "https://elmasria-eg.com/assets/img/og-cover.png"
+
+# النطاق بيُقرأ من مصدر الحقيقة الوحيد (`_tools/site_origin.txt`) — ممنوع يتكتب هنا.
+# القيمة المكتوبة يدويًا كانت بتقدِم: فضلت على النطاق القديم بعد ما الصفحات اتحدّثت،
+# فأي إعادة تشغيل كانت هترجّع `og:image` للنطاق القديم في ١٦ صفحة.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from set_origin import read_origin  # noqa: E402
+
+COVER = read_origin() + "/assets/img/og-cover.png"
 DESC_RE = re.compile(r'<meta name="description" content="([^"]*)"')
 BURGER = '<button class="burger" id="burger" aria-label="فتح القائمة">'
 BURGER_FIXED = ('<button class="burger" id="burger" aria-label="فتح القائمة" '
