@@ -876,7 +876,6 @@ section[id],div[id],form[id]{scroll-margin-top:96px}
   .cap-band{grid-template-columns:1fr;padding:32px}
   .contact-grid{grid-template-columns:1fr}
   .f-row{grid-template-columns:1fr}
-  .topbar .tb-hide{display:none}
   .cta-band{padding:36px 26px}
   .foot-grid{grid-template-columns:1fr}
   .cred-list{grid-template-columns:1fr}

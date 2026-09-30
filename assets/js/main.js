@@ -102,9 +102,12 @@
       });
       if(!ok) return;
       var v = function(id){ return $("#"+id).value.trim(); };
-      var subject = encodeURIComponent("طلب تواصل من الموقع — " + v("cf-service"));
-      var body = encodeURIComponent("الاسم: "+v("cf-name")+"\nالشركة: "+v("cf-company")+"\nالهاتف: "+v("cf-phone")+"\nالخدمة: "+v("cf-service")+"\n\nالرسالة:\n"+v("cf-msg"));
-      window.location.href = "mailto:info@elmasria-eg.com?subject="+subject+"&body="+body;
+      var msg = "طلب جديد من موقع الشركة:%0Aالاسم: " + encodeURIComponent(v("cf-name")) +
+        "%0Aالشركة: " + encodeURIComponent(v("cf-company")) +
+        "%0Aالهاتف: " + encodeURIComponent(v("cf-phone")) +
+        "%0Aالخدمة: " + encodeURIComponent(v("cf-service")) +
+        "%0Aالتفاصيل: " + encodeURIComponent(v("cf-msg"));
+      window.open("https://wa.me/201000101040?text=" + msg, "_blank", "noopener");
       var done = $("#formDone");
       if(done){ done.hidden = false; done.scrollIntoView({behavior:"smooth",block:"center"}); }
       form.reset();
@@ -173,18 +176,6 @@
         $$(".has-drop.open").forEach(function(li){
           if(!li.contains(e.target)) li.classList.remove("open");
         });
-      });
-    }
-    var wa = $("#waSend");
-    if(wa){
-      wa.addEventListener("click", function(){
-        var v = function(id){ var el = document.getElementById(id); return el ? el.value.trim() : ""; };
-        var msg = "طلب جديد من موقع الشركة:%0Aالاسم: " + encodeURIComponent(v("cf-name")) +
-          "%0Aالشركة: " + encodeURIComponent(v("cf-company")) +
-          "%0Aالهاتف: " + encodeURIComponent(v("cf-phone")) +
-          "%0Aالخدمة: " + encodeURIComponent(v("cf-service")) +
-          "%0Aالتفاصيل: " + encodeURIComponent(v("cf-msg"));
-        window.open("https://wa.me/201000101040?text=" + msg, "_blank", "noopener");
       });
     }
   })();

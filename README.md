@@ -93,12 +93,16 @@ python _tools/set_origin.py https://new.example.com   # تغيير النطاق 
 
 **ما لا يُلمس أبدًا:**
 
-* **البريد `info@elmasria-eg.com`** — هذا هو بريد الشركة الحقيقي، والبريد ليس رابطًا.
-  الحارس يفصل بينهما: أي `elmasria-eg.com` متبقٍّ في الوسم لازم يكون داخل `mailto:`
-  أو نص بريد.
 * **النطاقات الخارجية المقصودة** — `wa.me` · `fonts.googleapis.com` ·
   `fonts.gstatic.com` · `schema.org` · `sitemaps.org` · `openstreetmap.org` ·
   `www.w3.org`. الحارس يعرفها ويعدّها «خارجية مقصودة» لا «غريبة».
+
+> **قرار البريد (2026-09-30 · v28):** الموقع **لا يعرض أي بريد إلكتروني** — قناة
+> التواصل الرسمية هي **الواتساب** (`wa.me/201000101040`) والهاتف (`tel:`). أُزيل
+> `info@elmasria-eg.com` من الشريط العلوي والفوتر وصفحة التواصل والبيانات المنظّمة،
+> وتحوّل نموذج التواصل من `mailto:` إلى رسالة واتساب جاهزة. السياسة محروسة بـ
+> **`_tools/verify_mail_policy.py`** (يفشل عند أي بريد ظاهر أو `mailto:` أو مرجع
+> `#i-mail` أو بقايا الزر القديم). التفاصيل في `BRAND.md` § (8).
 
 **التغطية تلقائية:** الحارس يكتشف الملفات بـ`glob` (`*.html` + `services/*.html` +
 `sitemap.xml` + `robots.txt`)، فأي صفحة جديدة تُضاف مستقبلًا **تُغطّى فورًا** بلا تعديل
@@ -122,11 +126,12 @@ python _tools/bump_css_version.py --set 27   # حتمي وقابل لإعادة 
 
 ## الحراس (Guards)
 
-ستة حراس يفشلون بـ`exit 1` وبها رسالة واضحة. شغّلهم كلهم قبل أي كوميت يمسّ الواجهة:
+سبعة حراس يفشلون بـ`exit 1` وبها رسالة واضحة. شغّلهم كلهم قبل أي كوميت يمسّ الواجهة:
 
 ```bash
 for g in set_origin.py verify_asset_refs.py verify_no_orphan_assets.py \
-         verify_icons.py verify_class_coverage.py verify_span_scope.py; do
+         verify_icons.py verify_class_coverage.py verify_span_scope.py \
+         verify_mail_policy.py; do
   python "_tools/$g"
 done
 ```
@@ -139,6 +144,7 @@ done
 | `verify_icons.py` | إيموجي مبعثر، أو رمز أيقونة لا يُحلّ إلى `icons.svg` |
 | `verify_class_coverage.py` | كلاس في CSS بلا استخدام في الوسم أو JS |
 | `verify_span_scope.py` | قاعدة `span` تتسرّب لأنماط أخرى |
+| `verify_mail_policy.py` | أي بريد معروض، أو `mailto:`، أو بقايا النموذج القديم (السياسة: واتساب فقط) |
 
 > **قاعدة ملزمة:** أي حارس جديد لازم **يُثبت أنه يفشل** قبل الاعتماد عليه — احقن الخطأ
 > اللي المفروض يمسكه، شغّله، اتأكد إنه فشل برسالة مفهومة، وبعدين رجّع الملف وتأكد إنه
@@ -178,7 +184,8 @@ curl -X POST https://coolify.aidy.site/api/v1/deploy \
 * **الألوان:** المصدر الوحيد هو `assets/img/logo.png` — أي لون خارج `BRAND.md` ممنوع.
 * **الأيقونات:** لا إيموجي في الوسم؛ كل رمز يُضاف إلى `assets/img/icons.svg` ويُستدعى
   بـ`<use href="assets/img/icons.svg#i-…">`.
-* **البريد:** `info@elmasria-eg.com` لا يُعاد كتابته أبدًا (بريد حقيقي لا رابط).
+* **البريد:** الموقع **لا يعرض أي بريد** — قناة التواصل هي الواتساب والهاتف
+  (قرار v28، محروس بـ`verify_mail_policy.py`).
 * **الوسم مقابل CSS:** لا تُضف كلاسًا في CSS بلا استخدام، ولا تستخدم كلاسًا غير معرّف.
 
 ---
