@@ -70,6 +70,8 @@
     - لذلك لا تمرّر قوالب Go بعلامات مزدوجة: `--format "{{.Names}}"` ⟶ `template parsing error: template: :1: unclosed action`، وبالمفردة `--format '{{.Names}}'` تعمل. (نفس الدرس في §8 بصيغة أخرى.)
     - `$(...)` و`$VAR` **تُفسَّر محليًا** داخل سلسلة PowerShell المزدوجة: جملة `IP=$(sudo docker inspect ...)` نفّذت `sudo` على **ويندوز** نفسها ("Sudo is disabled on this machine") ورجعت فراغًا فصار الفحص `direct=000` — نتيجة مضلِّلة تمامًا. الحل: سلسلة PowerShell مفردة `'...'` (ومعها `''` لمفردة داخلية)، أو استبدل القوالب بـ`curl`/`grep` مباشرة.
     - مسار المفتاح لا يتوسّع داخل سلسلة مفردة: `-i $HOME\.ssh\id_ed25519` يفشل ⟶ اكتب المسار الكامل `-i C:\Users\<user>\.ssh\id_ed25519`.
+19. **`reset()` بلا متغيّر يفشل في PHP 8** (اتكشف 2026-10-06 أثناء مراقبة نشر elmasria): `reset($data["deployments"] ?? [])` خطأ قاتل فورًا (`Argument #1 could not be passed by reference`) لأن `reset` تأخذ مرجعًا ولا تقبل تعبيرًا. اسكربتات المراقبة عبر `docker exec coolify php` تُخرج **لا شيء مع exit 255** بلا رسالة — بداية مضمونة لضياع الوقت. الصحيح: خزّن التعبير في متغيّر أولًا (`$deps = $data["deployments"] ?? []; $first = $deps ? $deps[0] : [];`) وشغّل أول اختبار بـ`php -d display_errors=1`.
+20. **`curl.exe -o NUL` من Git Bash ينشئ ملفًا فعليًا اسمه `NUL` في الريبو** (اتكشف 2026-10-06): أمر صالح في PowerShell يتحول في Git Bash إلى إنشاء ملف عادي (~94 بايت)، و`git add -A` كاد يدفعه (`short read while indexing NUL`). القاعدة: من Git Bash استخدم `-o /dev/null`، وقبل أي `git add -A` راجع `git status --short` وأي `??` شارد.
 
 ---
 
