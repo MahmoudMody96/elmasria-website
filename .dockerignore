@@ -5,3 +5,5 @@ _tools
 *.md
 .gitignore
 .dockerignore
+elmasria_website_images_pack/
+
