@@ -109,7 +109,7 @@ def main():
         return 1
 
     print("\nOK  صفر بريد معروض · صفر mailto: · صفر بقايا النموذج القديم.")
-    print("    القناة الوحيدة للتواصل هي الواتساب والهاتف — كما في BRAND.md/README.md.")
+    print("    القناة الوحيدة للتواصل هي الواتساب والهاتف — كما في HANDBOOK.md/README.md.")
     return 0
 
 

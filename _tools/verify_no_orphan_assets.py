@@ -4,7 +4,7 @@
 السبب: في v25 اتكشفت 39 صورة يتيمة، وفي جلسة التنظيف (v27) الحارس القديم
 (`cleanup_orphan_photos_v25.py`) شاف `chairman.png` و`logo.png` و`logo-emblem.png`
 **يتامى** وكان هيحذفهم — مع إن:
-  · `BRAND.md` بيعتبر `logo.png` **المصدر الوحيد للألوان**،
+  · `HANDBOOK.md` (دليل المشروع) بيعتبر `logo.png` **المصدر الوحيد للألوان**،
   · و`optimize_brand_assets.py` بيوصّف `logo.png`/`logo-emblem.png` بأنهم
     **المasters — «never modified — the source of truth»** وأي حذف ليهم بيكسر
     القدرة على توليد كل المشتقات،
@@ -44,7 +44,7 @@ SKIP_DIRS = {".git", ".workbuddy-ai", "__pycache__", "node_modules", "_site"}
 # وأصول مصدر مفردة المستودع هو آخر نسخة منها.
 ALLOW = {
     "logo.png":
-        "master logo — مصدر الألوان الوحيد في BRAND.md ومدخل optimize_brand_assets.py",
+        "master logo — مصدر الألوان الوحيد في HANDBOOK.md ومدخل optimize_brand_assets.py",
     "logo-emblem.png":
         "master emblem — الأصل اللي كل مشتقات الهيدر/الفوتر بتتولّد منه",
     "chairman.png":

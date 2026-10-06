@@ -4,7 +4,7 @@ Answer one question with data: are the CSS colour tokens really the logo identit
 
 It reads assets/img/logo.png, extracts the dominant colours from the actual
 pixels (transparent ones excluded) and compares them, both ways, with the
-:root tokens of assets/css/style.css and the hex values claimed in BRAND.md.
+:root tokens of assets/css/style.css and the hex values claimed in HANDBOOK.md (project handbook).
 
 Usage (from repo root):
     python _tools/logo_palette.py            # top colours + token comparison
@@ -21,7 +21,7 @@ from PIL import Image
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOGO = os.path.join(ROOT, "assets", "img", "logo.png")
 CSS = os.path.join(ROOT, "assets", "css", "style.css")
-BRAND = os.path.join(ROOT, "BRAND.md")
+BRAND = os.path.join(ROOT, "HANDBOOK.md")
 
 HEX = re.compile(r"#([0-9a-fA-F]{6})\b")
 TOKEN = re.compile(r"--([a-z0-9-]+)\s*:\s*#([0-9a-fA-F]{6})\b")
@@ -102,7 +102,7 @@ def main(argv: list[str]) -> int:
 
     css = open(CSS, encoding="utf-8").read()
     tokens = [(name, rgb(h)) for name, h in TOKEN.findall(css)]
-    claimed = [(f"BRAND.md #{h}", rgb(h)) for h in dict.fromkeys(HEX.findall(open(BRAND, encoding="utf-8").read()))]
+    claimed = [(f"HANDBOOK.md #{h}", rgb(h)) for h in dict.fromkeys(HEX.findall(open(BRAND, encoding="utf-8").read()))]
 
     print(f"\ncss       : {len(tokens)} --tokens compared")
     print("=== dominant colours in the logo (antialias shades merged) ===")
@@ -138,7 +138,7 @@ def main(argv: list[str]) -> int:
               + ("" if n else "   ← value absent from the logo"))
     print(f"tokens found pixel-for-pixel in the logo: {literal}/{len(tokens)}")
 
-    print("\n=== hex values claimed in BRAND.md vs the logo ===")
+    print("\n=== hex values claimed in HANDBOOK.md vs the logo ===")
     for label, value in claimed:
         best, best_d = min(((c, distance(value, c)) for c, _ in colours), key=lambda cd: cd[1])
         verdict = ("exact" if best_d < 1 else
