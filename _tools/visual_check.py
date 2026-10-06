@@ -166,7 +166,7 @@ def main() -> int:
         page.locator("#services").scroll_into_view_if_needed()
         page.wait_for_timeout(400)
         page.screenshot(path=shot("02-desktop-services.png"))
-        page.locator(".check-list").scroll_into_view_if_needed()
+        page.locator(".proc-steps").scroll_into_view_if_needed()
         page.wait_for_timeout(300)
         page.screenshot(path=shot("03-desktop-checklist.png"))
         page.locator("footer .foot-contact").scroll_into_view_if_needed()

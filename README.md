@@ -17,7 +17,7 @@
 | اللغة | عربي RTL (`<html lang="ar" dir="rtl">`) |
 | الصفحات | **١٧** صفحة: ٥ في الجذر + ١٢ تحت `services/` |
 | الواجهة | `assets/css/style.css` · `assets/js/main.js` (JavaScript خام، بلا مكتبات) |
-| الخطوط | Cairo + IBM Plex Sans Arabic من Google Fonts |
+| الخطوط | Cairo + IBM Plex Sans Arabic — **مستضافة محليًا** `assets/fonts/` عبر `assets/css/fonts.css` (v30، صفر طلبات خارجية) |
 | الأيقونات | ملف sprite واحد `assets/img/icons.svg` يُستدعى بـ`<use>` |
 | الاستضافة | `nginx:alpine` داخل صورة Docker يبنيها **Coolify** من فرع `main` |
 | الأداء | أصول الشعار محسّنة من ~٨٨٠ KB إلى ~٢٥ KB لكل زائر أول (انظر `BRAND.md`) |
@@ -93,8 +93,8 @@ python _tools/set_origin.py https://new.example.com   # تغيير النطاق 
 
 **ما لا يُلمس أبدًا:**
 
-* **النطاقات الخارجية المقصودة** — `wa.me` · `fonts.googleapis.com` ·
-  `fonts.gstatic.com` · `schema.org` · `sitemaps.org` · `openstreetmap.org` ·
+* **النطاقات الخارجية المقصودة** — `wa.me` ·
+  `schema.org` · `sitemaps.org` · `openstreetmap.org` ·
   `www.w3.org`. الحارس يعرفها ويعدّها «خارجية مقصودة» لا «غريبة».
 
 > **قرار البريد (2026-09-30 · v28):** الموقع **لا يعرض أي بريد إلكتروني** — قناة
@@ -112,7 +112,7 @@ python _tools/set_origin.py https://new.example.com   # تغيير النطاق 
 
 ## كسر الكاش (`?v=N`)
 
-الملفان `style.css` و`main.js` يحملان إصدارًا في الرابط (`?v=28`) في **١٧ صفحة**،
+الملفان `style.css` و`main.js` يحملان إصدارًا في الرابط (`?v=29`) في **١٧ صفحة**،
 والصور/الأنماط مُكاشة ٧ أيام. **بعد أي تعديل على CSS أو JS لازم ترفع الإصدار** وإلا
 الزائر العائد سيرى النسخة القديمة:
 
